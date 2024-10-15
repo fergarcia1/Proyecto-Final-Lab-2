@@ -1,0 +1,144 @@
+# depslib dependency file v1.0
+1726080929 source:c:\users\imaga\proyectofinallab2\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1726166746 source:c:\users\fermi\proyectofinallab2\proyectofinallab2\main.c
+	<stdio.h>
+	<stdlib.h>
+	"nodoUsuario.h"
+	"nodoLibro.h"
+	"Libro.h"
+	"Usuario.h"
+
+1726166746 c:\users\fermi\proyectofinallab2\proyectofinallab2\nodousuario.h
+	"Usuario.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1726166746 c:\users\fermi\proyectofinallab2\proyectofinallab2\usuario.h
+
+1726166746 c:\users\fermi\proyectofinallab2\proyectofinallab2\nodolibro.h
+	"Libro.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1726166746 c:\users\fermi\proyectofinallab2\proyectofinallab2\libro.h
+
+1726442007 source:c:\users\lucio\documents\progra2\proyectofinallab2\proyectofinallab2\main.c
+	<stdio.h>
+	<stdlib.h>
+	"nodoUsuario.h"
+	"nodoLibro.h"
+	"Libro.h"
+	"Usuario.h"
+	"Usuario.c"
+
+1726437715 c:\users\lucio\documents\progra2\proyectofinallab2\proyectofinallab2\nodousuario.h
+	"Usuario.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1726438602 c:\users\lucio\documents\progra2\proyectofinallab2\proyectofinallab2\usuario.h
+
+1726437715 c:\users\lucio\documents\progra2\proyectofinallab2\proyectofinallab2\nodolibro.h
+	"Libro.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1726437715 c:\users\lucio\documents\progra2\proyectofinallab2\proyectofinallab2\libro.h
+
+1726438508 c:\users\lucio\documents\progra2\proyectofinallab2\proyectofinallab2\usuario.c
+	"Usuario.h"
+	"NodoUsuario.c"
+	"NodoUsuario.h"
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+
+1726437715 c:\users\lucio\documents\progra2\proyectofinallab2\proyectofinallab2\nodousuario.c
+	"NodoUsuario.h"
+
+1726442114 source:c:\users\lucio\documents\progra2\proyectofinallab2\proyectofinallab2\libro.c
+	"libro.h"
+
+1726580530 source:c:\users\lucas\onedrive\escritorio\github\proyectofinallab2\proyectofinallab2\libro.c
+	"libro.h"
+
+1726580530 c:\users\lucas\onedrive\escritorio\github\proyectofinallab2\proyectofinallab2\libro.h
+
+1726587235 source:c:\users\lucas\onedrive\escritorio\github\proyectofinallab2\proyectofinallab2\main.c
+	<stdio.h>
+	<stdlib.h>
+	"nodoUsuario.h"
+	"nodoLibro.h"
+	"Libro.h"
+	"Usuario.h"
+	"Usuario.c"
+
+1726580530 c:\users\lucas\onedrive\escritorio\github\proyectofinallab2\proyectofinallab2\nodousuario.h
+	"Usuario.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1726580530 c:\users\lucas\onedrive\escritorio\github\proyectofinallab2\proyectofinallab2\usuario.h
+
+1726580530 c:\users\lucas\onedrive\escritorio\github\proyectofinallab2\proyectofinallab2\nodolibro.h
+	"Libro.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1726580530 c:\users\lucas\onedrive\escritorio\github\proyectofinallab2\proyectofinallab2\usuario.c
+	"Usuario.h"
+	"NodoUsuario.c"
+	"NodoUsuario.h"
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+
+1726580530 c:\users\lucas\onedrive\escritorio\github\proyectofinallab2\proyectofinallab2\nodousuario.c
+	"NodoUsuario.h"
+
+1728694354 source:c:\users\imaga\proyectofinallab2\proyectofinallab2\libro.c
+	"libro.h"
+
+1728694354 c:\users\imaga\proyectofinallab2\proyectofinallab2\libro.h
+
+1728869740 source:c:\users\imaga\proyectofinallab2\proyectofinallab2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"NodoLibro.h"
+	"NodoUsuario.h"
+	"Libro.h"
+	"Usuario.h"
+
+1728759018 c:\users\imaga\proyectofinallab2\proyectofinallab2\nodousuario.h
+	"Usuario.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1728844167 c:\users\imaga\proyectofinallab2\proyectofinallab2\usuario.h
+	"NodoLibro.h"
+
+1728694354 c:\users\imaga\proyectofinallab2\proyectofinallab2\nodolibro.h
+	"Libro.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
