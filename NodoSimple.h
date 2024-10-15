@@ -1,0 +1,6 @@
+#ifndef NODOSIMPLE_H_INCLUDED
+#define NODOSIMPLE_H_INCLUDED
+#include libro
+
+
+#endif // NODOSIMPLE_H_INCLUDED
