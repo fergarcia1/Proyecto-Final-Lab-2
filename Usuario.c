@@ -214,6 +214,8 @@ void librosFavoritosUsuario(stUsuario usuario)
     for (int i = 0; i < usuario.validosLibrosFavs; i++)
     {
         printf("  Libro ID: %d\n", usuario.librosFavoritos[i]);
+        ///hay que hacer que muestre el nombre del libro tambien
+
     }
 }
 
