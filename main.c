@@ -7,6 +7,9 @@
 #include "Libro.h"
 #include "Usuario.h"
 
+///Zara4@gmail.com
+///sKtzqppz
+
 ///funcion modificar libros no se si esta bien
 
 nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario);
@@ -26,6 +29,9 @@ int main()
     ///PASAJE DEL ARCHIVO A LA LISTA
     listaUsuarios = archivoToListaUsuario("usuarios.dat",listaUsuarios);
     listaLibro = archivoToListaLibro("libros.dat",listaLibro);
+
+    //muestraLista(listaUsuarios);
+    //system("pause");
 
     nodoUsuario* aux = buscarUltimo(listaUsuarios);
     int idUsuarioActual = aux->usuario.idUsuario;
@@ -85,7 +91,8 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
                     if(strcmp(userAux->usuario.password, pass) == 0)
                     {
                         ///Ya comprobado el mail, si introduce bien la pass, al menu de usuarios(en proceso)
-                        menuUsuario(userAux,listaLibro,listaUsuarios,idUsuarioActual);
+                        userAux = menuUsuario(userAux,listaLibro,listaUsuarios,idUsuarioActual);
+                        flag = 4;
                     }
                     else
                     {
@@ -140,12 +147,13 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
         return 0;
         break;
     }
+    menuLogin(listaUsuarios,idUsuarioActual,listaLibro);
 }
 
 nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, nodoUsuario * listaUsuarios, int idUsuarioActual)
 {
     system("cls");
-    int valor = 0;
+    int valor = 0, idBorrar = 0;
     printf("-----------------------\n");
     printf("Bienvenido %s",usuarioLoged->usuario.username);
     printf("\n-----------------------\n");
@@ -171,15 +179,38 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual);
         break;
     case 2:
-        menuLogin(listaUsuarios,idUsuarioActual,listaLibro);
+        return usuarioLoged;
         break;
     case 3:
         muestraLista(listaUsuarios);
+        printf("\n-----------------------\n");
+        system("pause");
+        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual);
         break;
     case 4:
+        muestraLista(listaUsuarios);
+        printf("\n-----------------------\n");
+        printf("Id del Usuario a dar de baja:");
+        printf("\n-----------------------\n");
+        printf("\n>");
+        fflush(stdin);
+        scanf("%i", &idBorrar);
+        if(idBorrar > idUsuarioActual || idBorrar < 0){
+            printf("\nLa id no existe!");
+            menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual);
+        }
+        else{
+            nodoUsuario * userBaja = buscarIdUsuario(listaUsuarios,idBorrar);
+            if(userBaja){
+                userBaja->usuario.eliminado = -1;
+            }
+            else{
+                printf("\nOcurrio un error al dar de baja usuario.");
+            }
+        }
+        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual);
         break;
     }
-    system("pause");
     return usuarioLoged;
 }
 
@@ -271,85 +302,5 @@ int esValidoPass(char *password)
         }
     }
     return has_upper && has_lower;
-}
-
-
-/// MOSTRAR LIBROS
-
-void mostrarLibrosDesdeArchivo()
-{
-
-    FILE *archivo = fopen("libros.dat", "rb");  // Abrir archivo en modo binario
-    printf("aca estoy");
-    if (archivo == NULL)
-    {
-        printf("Error al abrir el archivo.\n");
-    }
-    else
-    {
-
-        stLibro libro;
-        while (fread(&libro, sizeof(stLibro), 1, archivo) == 1)
-        {
-            // Mostrar datos del libro
-            printf("ID Libro: %d\n", libro.idLibro);
-            printf("Título: %s\n", libro.titulo);
-            printf("Editorial: %s\n", libro.editorial);
-            printf("Autor: %s\n", libro.autor);
-            printf("Categoría: %s\n", libro.categoria);
-            printf("Valoración: %.2f\n", libro.valoracion);
-            printf("Eliminado: %d\n", libro.eliminado ? 1 : 0);  // Mostrar 1 si está eliminado, 0 si está activo
-
-            printf("\n--------------------------------\n");
-        }
-    }
-
-    fclose(archivo);
-}
-
-/// MOSTRAR USUARIOS
-
-
-void mostrarUsuariosDesdeArchivo()
-{
-    FILE *archivo = fopen("usuarios.dat", "rb");  // Abrir archivo en modo binario
-    if (archivo == NULL)
-    {
-        printf("Error al abrir el archivo.\n");
-        return;
-    }
-
-    stUsuario usuario;
-    while (fread(&usuario, sizeof(stUsuario), 1, archivo) == 1)
-    {
-        // Mostrar datos del usuario
-        printf("ID Usuario: %d\n", usuario.idUsuario);
-        printf("Email: %s\n", usuario.email);
-        printf("Username: %s\n", usuario.username);
-        printf("Es Admin: %d\n", usuario.esAdmin);
-        printf("Genero: %c\n", usuario.genero);
-        printf("Fecha de Nacimiento: %s\n", usuario.fechaNacimiento);
-        printf("DNI: %s\n", usuario.dni);
-        printf("Eliminado: %d\n", usuario.eliminado);
-
-        // Mostrar libros favoritos
-        printf("Libros Favoritos (%d):\n", usuario.validosLibrosFavs);
-        for (int i = 0; i < usuario.validosLibrosFavs; i++)
-        {
-            printf("  Libro ID: %d\n", usuario.librosFavoritos[i]);
-        }
-
-        // Mostrar domicilio
-        printf("Domicilio:\n");
-        printf("  Calle: %s\n", usuario.domicilio.calle);
-        printf("  Altura: %d\n", usuario.domicilio.altura);
-        printf("  Código Postal: %d\n", usuario.domicilio.cp);
-        printf("  Ciudad: %s\n", usuario.domicilio.ciudad);
-        printf("  Localidad: %s\n", usuario.domicilio.localidad);
-        printf("  País: %s\n", usuario.domicilio.pais);
-
-        printf("\n--------------------------------\n");
-    }
-    fclose(archivo);
 }
 

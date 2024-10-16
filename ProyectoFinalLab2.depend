@@ -142,3 +142,34 @@
 	<stdio.h>
 	<stdlib.h>
 
+1728694354 source:c:\users\imaga\proyectofinallab 2\libro.c
+	"libro.h"
+
+1728694354 c:\users\imaga\proyectofinallab 2\libro.h
+
+1729108580 source:c:\users\imaga\proyectofinallab 2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"NodoLibro.h"
+	"NodoUsuario.h"
+	"Libro.h"
+	"Usuario.h"
+
+1728694354 c:\users\imaga\proyectofinallab 2\nodolibro.h
+	"Libro.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1729107115 c:\users\imaga\proyectofinallab 2\nodousuario.h
+	"Usuario.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1728844167 c:\users\imaga\proyectofinallab 2\usuario.h
+	"NodoLibro.h"
+

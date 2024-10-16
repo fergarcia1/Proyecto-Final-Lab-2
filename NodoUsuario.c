@@ -72,3 +72,23 @@ void muestraLista(nodoUsuario * listaUsuario)
     }
 }
 
+nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar){
+    nodoUsuario * seg = listaUsuarios;
+    int flag = 0;
+    while(seg != NULL && flag == 0)
+    {
+        if(seg->usuario.idUsuario == idBorrar){
+            flag = 1;
+        }
+        else{
+            seg = seg->sig;
+        }
+    }
+    if(flag == 1 ){
+        return seg;
+    }
+    else{
+        return NULL;
+    }
+}
+

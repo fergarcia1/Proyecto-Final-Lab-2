@@ -106,13 +106,16 @@ stUsuario cargarUsuario(int idUsuarioActual, char mail[])
 
 void muestraUnUsuario(stUsuario a)
 {
-    printf("\n-----------------------\n");
-    printf("Usuario: %s\n",a.username);
-    printf("Email: %s\n",a.email);
-    printf("Contrasenia: %s\n",a.password);
-    printf("Id: %i\n",a.idUsuario);
-    printf("Es admin: %i\n",a.esAdmin);
-    printf("\n-----------------------\n");
+    if(a.eliminado == 0)
+    {
+        printf("\n-----------------------\n");
+        printf("Usuario: %s\n",a.username);
+        printf("Email: %s\n",a.email);
+        printf("Contrasenia: %s\n",a.password);
+        printf("Id: %i\n",a.idUsuario);
+        printf("Es admin: %i\n",a.esAdmin);
+        printf("\n-----------------------\n");
+    }
 }
 
 stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
@@ -201,7 +204,6 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
         return auxUser;
         break;
     case 6:
-        ///no se que hacer aca
         return auxUser;
         break;
     }
@@ -219,7 +221,7 @@ void librosFavoritosUsuario(stUsuario usuario)
     }
 }
 
-stUsuario modificarLibrosFavoritos(stUsuario usuario ,int idBorrar,nodoLibro * listaLibro)
+stUsuario modificarLibrosFavoritos(stUsuario usuario,int idBorrar,nodoLibro * listaLibro)
 {
     int flag = 0;
     for (int i = 0; i < usuario.validosLibrosFavs; i++) /// quitar
