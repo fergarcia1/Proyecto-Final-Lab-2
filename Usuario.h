@@ -32,7 +32,7 @@ typedef struct
 stUsuario cargarUsuario(int idUsuarioActual, char mail[]);
 void muestraUnUsuario(stUsuario a);
 stUsuario modificarUsuario(stUsuario a, nodoLibro * listaLibro);
-void librosFavoritosUsuario(stUsuario a);
+void librosFavoritosUsuario(stUsuario usuario, nodoLibro * listaLibro);
 stUsuario modificarLibrosFavoritos(stUsuario usuario,int id,nodoLibro * listaLibro);
 
 

@@ -10,7 +10,6 @@
 ///Zara4@gmail.com
 ///sKtzqppz
 
-///funcion modificar libros no se si esta bien
 
 nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario);
 nodoLibro * archivoToListaLibro(char nombre[], nodoLibro * listaLibro);
@@ -30,10 +29,7 @@ int main()
     listaUsuarios = archivoToListaUsuario("usuarios.dat",listaUsuarios);
     listaLibro = archivoToListaLibro("libros.dat",listaLibro);
 
-    //muestraLista(listaUsuarios);
-    //system("pause");
-
-    nodoUsuario* aux = buscarUltimo(listaUsuarios);
+    nodoUsuario* aux = buscarUltimoUsuario(listaUsuarios);
     int idUsuarioActual = aux->usuario.idUsuario;
 
     menuLogin(listaUsuarios, idUsuarioActual,listaLibro); ///paso la lista al menu y el numero de ID actual, en caso de que deba crear un nuevo user
@@ -49,13 +45,13 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
     int valor = 0, flag = 0; ///Valor es para el switch del menu, flag es para el log in
     char mail[20], pass[20]; /// Mail y contraseña para verificar el log in
     nodoUsuario * userAux = inicLista();
-    printf("-----------------------\n");
-    printf("1. Ingrese con su cuenta.");
-    printf("\n-----------------------\n");
-    printf("\n2. Cree una cuenta nueva.");
-    printf("\n-----------------------\n");
-    printf("\n3. Salir del programa.");
-    printf("\n-----------------------\n");
+    printf("--------------------------\n");
+    printf("|1| Ingrese con su cuenta");
+    printf("\n--------------------------\n");
+    printf("|2| Cree una cuenta nueva");
+    printf("\n--------------------------\n");
+    printf("|3| Salir del programa");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     scanf("%i", &valor);
@@ -64,12 +60,12 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
     {
     case 1: /// Log con cuenta ya registrada
         printf("-----------------------\n");
-        printf("Ingrese su email: ");
+        printf("Ingrese su email ");
         printf("\n-----------------------\n");
         printf("\n>");
         fflush(stdin);
         gets(mail);
-        if (!esValidoEmail(mail))
+        if (!esValidoEmail(mail)) ///comprobacion de mail
         {
             printf("\nEmail invalido. Debe contener un '@' y '.com'.\n");
             system("pause");
@@ -78,39 +74,48 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
         else
         {
             userAux = buscarMailUsuario(listaUsuarios, &mail);
-            if(userAux)  ///Si lo encontro en la funcion buscarMailUsuario no deberia ser null, asi que pido la pass
+            if(userAux->usuario.eliminado == 0) /// verifico que no este eliminado
             {
-                while(flag < 3)
+                if(userAux)  ///Si lo encontro en la funcion buscarMailUsuario no deberia ser null, asi que pido la pass
                 {
-                    printf("-----------------------\n");
-                    printf("\nIngrese su contrasenia: ");
-                    printf("\n-----------------------\n");
-                    printf("\n>");
-                    fflush(stdin);
-                    gets(pass);
-                    if(strcmp(userAux->usuario.password, pass) == 0)
+                    while(flag < 3)
                     {
-                        ///Ya comprobado el mail, si introduce bien la pass, al menu de usuarios(en proceso)
-                        userAux = menuUsuario(userAux,listaLibro,listaUsuarios,idUsuarioActual);
-                        flag = 4;
-                    }
-                    else
-                    {
-                        flag = flag+1;
-                        printf("\nContraseña incorrecta, vuelva a intentar. Intentos: %i/3", flag);
+                        printf("\n-----------------------\n");
+                        printf("Ingrese su contrasenia ");
+                        printf("\n-----------------------\n");
+                        printf("\n>");
+                        fflush(stdin);
+                        gets(pass);
+                        if(strcmp(userAux->usuario.password, pass) == 0)
+                        {
+                            ///Ya comprobado el mail, si introduce bien la pass, al menu de usuarios(en proceso)
+                            userAux = menuUsuario(userAux,listaLibro,listaUsuarios,idUsuarioActual);
+                            flag = 4;
+                        }
+                        else
+                        {
+                            flag = flag+1;
+                            printf("\nContraseña incorrecta, vuelva a intentar. Intentos: %i/3", flag);
+                            printf("\n");
+                        }
                     }
                 }
+                else
+                {
+                    printf("\nEmail incorrecto, intente una vez mas o cree una cuenta nueva.\n");
+                    menuLogin(listaUsuarios,idUsuarioActual,listaLibro); ///en caso de que no sea valido el mail, lo mando devuelta al principio
+                }
             }
-            else
-            {
-                printf("\nEmail incorrecto, intente una vez mas o cree una cuenta nueva.\n");
-                menuLogin(listaUsuarios,idUsuarioActual,listaLibro); ///en caso de que no sea valido el mail, lo mando devuelta al principio
+            else{
+                printf("\nEl usuario  se encuentra dado de baja, comuniquese con el soporte.\n");
+                system("pause");
             }
+
         }
         break;
     case 2: /// Crear cuenta
-        printf("\n-----------------------\n");
-        printf("Ingrese su email: ");
+        printf("-----------------------\n");
+        printf("Ingrese su email ");
         printf("\n-----------------------\n");
         printf("\n>");
         fflush(stdin);
@@ -154,19 +159,19 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
 {
     system("cls");
     int valor = 0, idBorrar = 0;
-    printf("-----------------------\n");
+    printf("----------------------------\n");
     printf("Bienvenido %s",usuarioLoged->usuario.username);
-    printf("\n-----------------------\n");
-    printf("\n1. Modificar datos.");
-    printf("\n-----------------------\n");
-    printf("\n2. Cerrar sesion.");
-    printf("\n-----------------------\n");
+    printf("\n----------------------------\n");
+    printf("\n1| Modificar datos.");
+    printf("\n----------------------------\n");
+    printf("2| Cerrar sesion.");
+    printf("\n----------------------------\n");
     if(usuarioLoged->usuario.esAdmin == 1) ///solo se muestran estas opciones si el usuario es un admin
     {
-        printf("\n3. Ver Usuarios registrados.");
-        printf("\n-----------------------\n");
-        printf("\n4. Dar de baja usuario.");
-        printf("\n-----------------------\n");
+        printf("3| Ver Usuarios registrados.");
+        printf("\n----------------------------\n");
+        printf("4| Dar de baja usuario.");
+        printf("\n----------------------------\n");
     }
     printf("\n>");
     fflush(stdin);
@@ -182,29 +187,33 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
         return usuarioLoged;
         break;
     case 3:
-        muestraLista(listaUsuarios);
+        muestraListaUsuario(listaUsuarios);
         printf("\n-----------------------\n");
         system("pause");
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual);
         break;
     case 4:
-        muestraLista(listaUsuarios);
+        muestraListaUsuario(listaUsuarios);
         printf("\n-----------------------\n");
         printf("Id del Usuario a dar de baja:");
         printf("\n-----------------------\n");
         printf("\n>");
         fflush(stdin);
         scanf("%i", &idBorrar);
-        if(idBorrar > idUsuarioActual || idBorrar < 0){
+        if(idBorrar > idUsuarioActual || idBorrar < 0) ///verifico que la id este entre 0 y las id validas
+        {
             printf("\nLa id no existe!");
             menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual);
         }
-        else{
+        else
+        {
             nodoUsuario * userBaja = buscarIdUsuario(listaUsuarios,idBorrar);
-            if(userBaja){
+            if(userBaja)
+            {
                 userBaja->usuario.eliminado = -1;
             }
-            else{
+            else
+            {
                 printf("\nOcurrio un error al dar de baja usuario.");
             }
         }
@@ -233,18 +242,18 @@ nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario)
 
 nodoLibro * archivoToListaLibro(char nombre[], nodoLibro * listaLibro)
 {
-    FILE * f = fopen(nombre, "rb");
+    FILE * fl = fopen(nombre, "rb");
     stLibro aux;
     nodoLibro * nuevo;
-    if(f)
+    if(fl)
     {
-        while(fread(&aux,sizeof(nodoLibro),1,f) > 0)
+        while(fread(&aux,sizeof(stLibro),1,fl) > 0)
         {
             nuevo = crearNodoLibro(aux);
             listaLibro = agregarAlFinalLibro(listaLibro,nuevo);
         }
     }
-    fclose(f);
+    fclose(fl);
     return listaLibro;
 }
 
@@ -303,4 +312,32 @@ int esValidoPass(char *password)
     }
     return has_upper && has_lower;
 }
+void mostrarLibrosDesdeArchivo()
+ {
+
+    FILE *archivo = fopen("libros.dat", "rb");  // Abrir archivo en modo binario
+    printf("aca estoy");
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo.\n");
+    }else
+    {
+
+        stLibro libro;
+        while (fread(&libro, sizeof(stLibro), 1, archivo) == 1) {
+            // Mostrar datos del libro
+            printf("ID Libro: %d\n", libro.idLibro);
+            printf("Título: %s\n", libro.titulo);
+            printf("Editorial: %s\n", libro.editorial);
+            printf("Autor: %s\n", libro.autor);
+            printf("Categoría: %s\n", libro.categoria);
+            printf("Valoración: %.2f\n", libro.valoracion);
+            printf("Eliminado: %d\n", libro.eliminado ? 1 : 0);  // Mostrar 1 si está eliminado, 0 si está activo
+
+            printf("\n--------------------------------\n");
+        }
+    }
+
+    fclose(archivo);
+}
+
 

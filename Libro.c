@@ -1,1 +1,6 @@
-#include "libro.h"
+#include "Libro.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+

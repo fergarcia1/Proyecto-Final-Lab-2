@@ -15,6 +15,11 @@ typedef struct{
 
 nodoLibro * crearNodoLibro(stLibro libro);
 nodoLibro * agregarAlFinalLibro(nodoLibro * listaLibro, nodoLibro * nuevo);
+nodoLibro* buscarUltimoLibro(nodoLibro* listaLibro);
+void muestraNodoLibro(nodoLibro * nodo);
+void muestraListaLibro(nodoLibro * listaLibro);
+void muestraUnLibroPorId(nodoLibro * listaLibro, int id);
+
 
 
 #endif // NODOLIBRO_H_INCLUDED

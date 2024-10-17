@@ -1,5 +1,5 @@
 #include "Usuario.h"
-
+#include "NodoLibro.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,15 +13,16 @@ stUsuario cargarUsuario(int idUsuarioActual, char mail[])
     aux.esAdmin = 0;
     while(flag == 0)
     {
-        printf("\n-----------------------\n");
+        printf("\n--------------------------");
         printf("\nIngrese su contrasenia ");
+        printf("\n--------------------------\n");
         printf("\n>");
         fflush(stdin);
         gets(aux.password);
 
         if(!esValidoPass(aux.password))
         {
-            printf("La contraseña debe contener al menos 1 mayúscula y 1 minúscula.\n");
+            printf("La contraseña debe contener al menos 1 mayuscula y 1 minuscula.\n");
             system("pause");
             system("cls");
         }
@@ -31,72 +32,72 @@ stUsuario cargarUsuario(int idUsuarioActual, char mail[])
         }
     }
     strcpy(aux.email,mail);
-    printf("\n-----------------------\n");
-    printf("\nIngrese un nombre de Usuario: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese un nombre de Usuario ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     gets(aux.username);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese un genero: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese un genero ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     scanf("%c", &aux.genero);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese un fecha de nacimiento: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese un fecha de nacimiento ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     gets(aux.fechaNacimiento);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese un DNI: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese un DNI ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     gets(aux.dni);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese su pais: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese su pais ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     gets(aux.domicilio.pais);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese su localidad: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese su localidad ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     gets(aux.domicilio.localidad);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese su ciudad: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese su ciudad ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     gets(aux.domicilio.ciudad);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese su calle: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese su calle ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     gets(aux.domicilio.calle);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese la altura: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese la altura ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     scanf("%d", &aux.domicilio.altura);
 
-    printf("\n-----------------------\n");
-    printf("\nIngrese su codigo postal: ");
-    printf("\n-----------------------\n");
+    printf("\n--------------------------");
+    printf("\nIngrese su codigo postal ");
+    printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     scanf("%d", &aux.domicilio.cp);
@@ -123,19 +124,19 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
     system("cls");
     stUsuario auxUser = usuario;
     int valor = 0, idAux = 0;
-    printf("\n-----------------------\n");
-    printf("1. Modificar nombre de usuario.");
-    printf("\n-----------------------\n");
-    printf("\n2. Modificar contrasenia.");
-    printf("\n-----------------------\n");
-    printf("\n3. Modificar email.");
-    printf("\n-----------------------\n");
-    printf("\n4. Modificar libros favoritos.");
-    printf("\n-----------------------\n");
-    printf("\n5. Modificar dni.");
-    printf("\n-----------------------\n");
-    printf("\n6. Volver al menu.");
-    printf("\n-----------------------\n");
+    printf("------------------------------\n");
+    printf("1| Modificar nombre de usuario.");
+    printf("\n------------------------------\n");
+    printf("2| Modificar contrasenia.");
+    printf("\n------------------------------\n");
+    printf("3| Modificar email.");
+    printf("\n------------------------------\n");
+    printf("4| Modificar libros favoritos.");
+    printf("\n------------------------------\n");
+    printf("5| Modificar dni.");
+    printf("\n------------------------------\n");
+    printf("6| Volver al menu.");
+    printf("\n------------------------------\n");
 
     printf("\n>");
     fflush(stdin);
@@ -155,9 +156,9 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
         printf("\nNueva contrasenia: ");
         fflush(stdin);
         gets(auxUser.password);
-        if (!esValidoEmail(auxUser.password))
+        if(!esValidoPass(auxUser.password))
         {
-            printf("\nEmail invalido. Debe contener un '@' y '.com'.\n");
+            printf("La contraseña debe contener al menos 1 mayuscula y 1 minuscula.\n");
             system("pause");
             modificarUsuario(usuario,listaLibro);
         }
@@ -180,14 +181,14 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
         }
         else
         {
-            printf("\Email cambiado correctamente.\n");
+            printf("Email cambiado correctamente.\n");
             system("pause");
             return auxUser;
         }
         break;
     case 4:
         printf("\nEstos son tus libros favoritos ");
-        librosFavoritosUsuario(auxUser);
+        librosFavoritosUsuario(auxUser,listaLibro);
         printf("\nIntroduzca la id de los libros a agregar/quitar: ");
         printf("\n>");
         fflush(stdin);
@@ -210,14 +211,13 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
     return auxUser;
 }
 
-void librosFavoritosUsuario(stUsuario usuario)
+void librosFavoritosUsuario(stUsuario usuario, nodoLibro * listaLibro)
 {
     printf("(%d):\n", usuario.validosLibrosFavs);
     for (int i = 0; i < usuario.validosLibrosFavs; i++)
     {
-        printf("  Libro ID: %d\n", usuario.librosFavoritos[i]);
-        ///hay que hacer que muestre el nombre del libro tambien
-
+        //printf("  Libro ID: %d\n", usuario.librosFavoritos[i]);
+        muestraUnLibroPorId(listaLibro,usuario.librosFavoritos[i]);
     }
 }
 

@@ -32,7 +32,7 @@ nodoUsuario * crearNodoUsuario(stUsuario usuario)
     return nuevo;
 }
 
-nodoUsuario* buscarUltimo(nodoUsuario* listaUsuarios)
+nodoUsuario* buscarUltimoUsuario(nodoUsuario* listaUsuarios)
 {
     nodoUsuario * seg = listaUsuarios;
     while(seg->sig != NULL)
@@ -50,24 +50,24 @@ nodoUsuario* agregarAlFinalUsuario(nodoUsuario* listaUsuarios, nodoUsuario * nue
     }
     else
     {
-        nodoUsuario * ultimo = buscarUltimo(listaUsuarios);
+        nodoUsuario * ultimo = buscarUltimoUsuario(listaUsuarios);
         ultimo->sig = nuevo;
     }
 
     return listaUsuarios;
 }
 
-void muestraNodo(nodoUsuario * nodo)
+void muestraNodoUsuario(nodoUsuario * nodo)
 {
     muestraUnUsuario(nodo->usuario);
 
 }
 
-void muestraLista(nodoUsuario * listaUsuario)
+void muestraListaUsuario(nodoUsuario * listaUsuario)
 {
     while(listaUsuario)
     {
-        muestraNodo(listaUsuario);
+        muestraNodoUsuario(listaUsuario);
         listaUsuario = listaUsuario->sig;
     }
 }
