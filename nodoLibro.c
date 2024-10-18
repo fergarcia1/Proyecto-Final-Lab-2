@@ -22,3 +22,57 @@ nodoLibro * agregarAlFinalLibro(nodoLibro * listaLibro, nodoLibro * nuevo)
 
     return listaLibro;
 }
+
+nodoLibro * buscarPorAutor(nodoLibro * listaLibro, char * autor)
+{
+    nodoLibro * seg = listaLibro;
+    int flag=0;
+
+    while(seg != NULL && flag == 0 )
+    {
+        if(strcmp(seg->libro.autor,autor)==0)
+        {
+            flag = 1;
+        }
+        else
+        {
+            seg = seg->sig;
+        }
+    }
+    if(flag == 1)
+    {
+        return seg;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+nodoLibro * buscarPorTitulo(nodoLibro * listaLibro, char titulo)
+{
+    nodoLibro * seg = listaLibro;
+    int flag = 0;
+
+    while(seg != NULL && flag == 0 )
+    {
+        if(strcmp(seg->libro.titulo,titulo)==0)
+        {
+            flag == 1;
+        }
+        else
+        {
+            seg = seg->sig;
+        }
+    }
+    if(flag == 1)
+    {
+        return seg;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+

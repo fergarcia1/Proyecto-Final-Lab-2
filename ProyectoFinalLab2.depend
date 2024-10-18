@@ -142,3 +142,34 @@
 	<stdio.h>
 	<stdlib.h>
 
+1729211890 source:c:\users\lucio\documents\progra2\finalproyect\proyecto-final-lab-2\libro.c
+	"Libro.h"
+
+1729219020 c:\users\lucio\documents\progra2\finalproyect\proyecto-final-lab-2\libro.h
+
+1729209417 source:c:\users\lucio\documents\progra2\finalproyect\proyecto-final-lab-2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"NodoLibro.h"
+	"NodoUsuario.h"
+	"Libro.h"
+	"Usuario.h"
+
+1729218097 c:\users\lucio\documents\progra2\finalproyect\proyecto-final-lab-2\nodolibro.h
+	"Libro.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1729209417 c:\users\lucio\documents\progra2\finalproyect\proyecto-final-lab-2\nodousuario.h
+	"Usuario.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1729209417 c:\users\lucio\documents\progra2\finalproyect\proyecto-final-lab-2\usuario.h
+	"NodoLibro.h"
+

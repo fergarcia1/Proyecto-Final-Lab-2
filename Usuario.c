@@ -196,7 +196,7 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
         printf("\nNuevo dni: ");
         fflush(stdin);
         gets(auxUser.dni);
-        printf("\Dni cambiado correctamente.\n");
+        printf("\ Dni cambiado correctamente.\n");
         system("pause");
         return auxUser;
         break;
