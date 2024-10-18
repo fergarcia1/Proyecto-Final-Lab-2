@@ -10,7 +10,7 @@ stUsuario cargarUsuario(int idUsuarioActual, char mail[])
     stUsuario aux;
     int flag = 0;
     aux.idUsuario = idUsuarioActual + 1;
-    aux.esAdmin = 0;
+    aux.esAdmin = 1;
     while(flag == 0)
     {
         printf("\n--------------------------");

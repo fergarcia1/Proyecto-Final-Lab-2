@@ -13,5 +13,6 @@ typedef struct{
 }stLibro;
 
 void muestraLibro(stLibro libro);
+stLibro modificarLibros(stLibro libro/*,nodoLibro * listaLibro*/);
 
 #endif // LIBRO_H_INCLUDED

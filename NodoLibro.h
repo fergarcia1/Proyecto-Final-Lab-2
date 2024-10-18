@@ -21,6 +21,9 @@ void muestraListaLibro(nodoLibro * listaLibro);
 void muestraUnLibroPorId(nodoLibro * listaLibro, int id);
 void muestraLibroPorAutor(nodoLibro * listaLibro);
 void muestraLibroPorCategoria(nodoLibro * listaLibro);
+nodoLibro * darDeAltaLibro(nodoLibro * listaLibro,int idLibroActual);
+nodoLibro * darDeBajaLibro(nodoLibro * listaLibro,int idLibroActual);
+nodoLibro * buscarPorTitulo(nodoLibro * listaLibro, char titulo);
 
 
 

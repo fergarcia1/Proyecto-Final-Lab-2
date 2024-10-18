@@ -7,8 +7,8 @@
 #include "Libro.h"
 #include "Usuario.h"
 
-///Zara4@gmail.com
-///sKtzqppz
+///Carolina_6664@yahoo.com
+///3c0NoqBrjZ
 
 
 ///pasaje de archivo a nuestras listas
@@ -179,35 +179,32 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
     system("cls");
     int valor = 0, idBorrar = 0;
     printf("------------------------------------------\n");
-    printf("             Bienvenido %s!",usuarioLoged->usuario.username);
+    printf("          |Bienvenido/a %s!|",usuarioLoged->usuario.username);
     printf("\n------------------------------------------\n");
     printf("|1| Modificar datos");
     printf("\n------------------------------------------\n");
-    printf("|2| Consulta libros por autor");
+    printf("|2| Menu libros");
     printf("\n------------------------------------------\n");
-    printf("|3| Consulta libros por categoria");
-    printf("\n------------------------------------------\n");
-    printf("|4| Ver Libros disponibles");
-    printf("\n------------------------------------------\n");
-    printf("|5| Cerrar sesion");
+    printf("|3| Cerrar sesion");
     printf("\n------------------------------------------\n");
     if(usuarioLoged->usuario.esAdmin == 1) ///solo se muestran estas opciones si el usuario es un admin
     {
-        printf("|6| Ver Usuarios registrados");
+        printf("\n--------|Funciones Adm|--------\n");
         printf("\n------------------------------------------\n");
-        printf("|7| Dar de baja o de alta un usuario/libro");
+        printf("|4| Ver Usuarios registrados");
+        printf("\n------------------------------------------\n");
+        printf("|5| Dar de baja o de alta un usuario/libro");
         printf("\n------------------------------------------\n");
     }
     printf("\n>");
     fflush(stdin);
     scanf("%i", &valor);
-    if(esValidoValor(valor,7) == 0)
+    if(esValidoValor(valor,5) == 0)
     {
         printf("\nPor favor introduzca un valor valido!\n");
         system("pause");
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
     }
-
     switch(valor)
     {
     case 1: ///modificar datos
@@ -216,46 +213,66 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
         break;
 
     case 2: /// consultar libros por autor
-
-        muestraLibroPorAutor(listaLibro);
-        system("pause");
+        menuLibros(listaLibro);
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
 
-    case 3: /// consultar libros por categoria
-
-        muestraLibroPorCategoria(listaLibro);
-        system("pause");
-        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
-        break;
-
-    case 4: /// cerrar sesion
-        system("cls");
-        muestraListaLibro(listaLibro);
-        printf("\n-----------------------\n");
-        system("pause");
-        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
+    case 3: /// cerrar sesion
         return usuarioLoged;
         break;
 
     /// FUNCIONES DE ADMIN
-    case 5: /// lista de usuarios
-        return usuarioLoged;
-        break;
-
-    case 6:
+    case 4:/// lista de usuarios
         muestraListaUsuario(listaUsuarios);
         printf("\n-----------------------\n");
         system("pause");
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
-    case 7:
+    case 5: /// menu alta y baja usuarios y libros
         menuAltaYBaja(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
         system("pause");
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
     }
     return usuarioLoged;
+}
+void menuLibros(nodoLibro * listaLibro){
+    system("cls");
+    int valor = 0;
+    printf("-----------------------------------\n");
+    printf("|1| Consulta libros por autor");
+    printf("\n-----------------------------------\n");
+    printf("|2| Consulta libros por categoria");
+    printf("\n-----------------------------------\n");
+    printf("|3| Ver todos los libros disponibles");
+    printf("\n-----------------------------------\n");
+    printf("|4| Volver al menu de Usuario");
+    printf("\n-----------------------------------\n");
+    printf("\n>");
+    fflush(stdin);
+    scanf("%i", &valor);
+    switch(valor){
+    case 1:
+        muestraLibroPorAutor(listaLibro);
+        system("pause");
+        menuLibros(listaLibro);
+        break;
+    case 2:
+        muestraLibroPorCategoria(listaLibro);
+        system("pause");
+        menuLibros(listaLibro);
+        break;
+    case 3:
+        system("cls");
+        muestraListaLibro(listaLibro);
+        printf("\n-----------------------\n");
+        system("pause");
+        menuLibros(listaLibro);
+        break;
+    case 4:
+        return 0;
+        break;
+    }
 }
 
 void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual)
