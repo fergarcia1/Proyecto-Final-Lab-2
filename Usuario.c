@@ -5,11 +5,12 @@
 #include <stdlib.h>
 #include <conio.h>
 
-stUsuario cargarUsuario(int idUsuarioActual, char mail[])
+stUsuario cargarUsuario(int *idUsuarioActual, char mail[])
 {
     stUsuario aux;
     int flag = 0;
-    aux.idUsuario = idUsuarioActual + 1;
+    aux.idUsuario = (*idUsuarioActual) + 1;
+    (*idUsuarioActual)++;
     aux.esAdmin = 0;
     while(flag == 0)
     {
@@ -107,14 +108,13 @@ stUsuario cargarUsuario(int idUsuarioActual, char mail[])
 
 void muestraUnUsuario(stUsuario a)
 {
-
-        printf("\n-----------------------\n");
+        printf("-----------------------\n");
         printf("Usuario: %s\n",a.username);
         printf("Email: %s\n",a.email);
         printf("Contrasenia: %s\n",a.password);
         printf("Id: %i\n",a.idUsuario);
         printf("Es admin: %i\n",a.esAdmin);
-        printf("\n-----------------------\n");
+        printf("-----------------------\n");
 
 }
 
@@ -224,10 +224,14 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
     case 4: ///cambio libros
         printf("\nEstos son tus libros favoritos ");
         librosFavoritosUsuario(auxUser,listaLibro);
-        printf("\nIntroduzca la Id de los libros a agregar/quitar, si la id se encuentra en su lista, sera eliminada, si no se agregara el libro\n");
+        printf("\nIntroduzca la Id de los libros a agregar/quitar, si la id se encuentra en su lista, sera eliminada, si no se agregara el libro (-1 para volver atras!)\n");
         printf("\n>");
         fflush(stdin);
         scanf("%i", &idAux);
+        if(idAux == -1)
+        {
+            return auxUser;
+        }
         auxUser = modificarLibrosFavoritos(auxUser,idAux,listaLibro);
         return auxUser;
         break;

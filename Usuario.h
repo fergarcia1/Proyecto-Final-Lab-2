@@ -29,7 +29,7 @@ typedef struct
     int eliminado; /// 0 si está activo - 1 si está eliminado
 } stUsuario;
 
-stUsuario cargarUsuario(int idUsuarioActual, char mail[]);
+stUsuario cargarUsuario(int *idUsuarioActual, char mail[]);
 void muestraUnUsuario(stUsuario a);
 stUsuario modificarUsuario(stUsuario a, nodoLibro * listaLibro);
 void librosFavoritosUsuario(stUsuario usuario, nodoLibro * listaLibro);

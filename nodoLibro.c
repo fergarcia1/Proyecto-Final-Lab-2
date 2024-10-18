@@ -127,11 +127,6 @@ void muestraLibroPorAutor(nodoLibro * listaLibro)
              muestraNodoLibro(seg);
             flag = 1;
         }
-        /*if(strcmp(aux, seg->libro.autor) == 0)
-        {
-            muestraNodoLibro(seg);
-            flag = 1;
-        }*/
         seg = seg->sig;
     }
     if (!flag)
@@ -155,7 +150,7 @@ void muestraLibroPorCategoria(nodoLibro * listaLibro)
     int flag = 0;
     while(seg != NULL)
     {
-        if(strcmp(aux, seg->libro.categoria) == 0)
+        if(compararCadenasIgnorandoMayusculas(aux, seg->libro.autor) == 1)
         {
             muestraNodoLibro(seg);
             flag = 1;
