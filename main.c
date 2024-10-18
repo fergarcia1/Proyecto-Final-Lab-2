@@ -50,8 +50,7 @@ int main()
     listaToArchivoUsuarios("usuarios.dat",listaUsuarios);
     return 0;
 }
-
-///MENUS
+///MENU INICIAL CON SIGN IN & REGISTRATION
 void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro,int idLibroActual)
 {
     system("cls");
@@ -174,6 +173,7 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
     }
     menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
 }
+///MENU LOGGED USER
 nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, nodoUsuario * listaUsuarios, int idUsuarioActual, int idLibroActual)
 {
     system("cls");
@@ -199,7 +199,7 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
     printf("\n>");
     fflush(stdin);
     scanf("%i", &valor);
-    if(esValidoValor(valor,5) == 0)
+    if(esValidoValor(valor,5) == 0)///Verificamos que la opcion ingresada sea valida
     {
         printf("\nPor favor introduzca un valor valido!\n");
         system("pause");
@@ -208,12 +208,12 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
     switch(valor)
     {
     case 1: ///modificar datos
-        usuarioLoged->usuario = modificarUsuario(usuarioLoged->usuario,listaLibro);
+        usuarioLoged->usuario = modificarUsuario(usuarioLoged->usuario,listaLibro);///Modificamos datos del usuario y se actualiza el archivo al finalizar
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
 
     case 2: /// consultar libros por autor
-        menuLibros(listaLibro);
+        menuLibros(listaLibro);///Ingresamos al menu de libros
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
 
@@ -223,19 +223,21 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
 
     /// FUNCIONES DE ADMIN
     case 4:/// lista de usuarios
-        muestraListaUsuario(listaUsuarios);
+        muestraListaUsuario(listaUsuarios); ///Ver data de usuarios
         printf("\n-----------------------\n");
         system("pause");
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
     case 5: /// menu alta y baja usuarios y libros
-        menuAltaYBaja(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+        menuAltaYBaja(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);///Funcion para dar de baja y alta un usuario o libro
         system("pause");
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
     }
     return usuarioLoged;
 }
+
+///MENU DE LIBROS
 void menuLibros(nodoLibro * listaLibro){
     system("cls");
     int valor = 0;
@@ -259,18 +261,18 @@ void menuLibros(nodoLibro * listaLibro){
     }
     switch(valor){
     case 1:
-        muestraLibroPorAutor(listaLibro);
+        muestraLibroPorAutor(listaLibro);/// Se verifica que el autor se encuentre dentro del archivo y muestra libros
         system("pause");
         menuLibros(listaLibro);
         break;
     case 2:
-        muestraLibroPorCategoria(listaLibro);
+        muestraLibroPorCategoria(listaLibro);///Se verifica que se encuentre la categoria y libros, luego se muestra
         system("pause");
         menuLibros(listaLibro);
         break;
     case 3:
         system("cls");
-        muestraListaLibro(listaLibro);
+        muestraListaLibro(listaLibro); ///mostramos todos los libros (que esten dados de alta)
         printf("\n-----------------------\n");
         system("pause");
         menuLibros(listaLibro);
@@ -280,6 +282,7 @@ void menuLibros(nodoLibro * listaLibro){
         break;
     }
 }
+///MENU DAR DE BAJA / ALTA USUARIO / LIBRO
 void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual)
 {
     int valor = 0;
@@ -298,6 +301,7 @@ void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro *
     printf("\n>");
     fflush(stdin);
     scanf("%i", &valor);
+
     if(esValidoValor(valor,5) == 0)
     {
         printf("\nPor favor introduzca un valor valido!\n");
@@ -324,8 +328,7 @@ void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro *
         break;
     }
 }
-
-///FUNCIONES DE ARCHIVOS
+///PASAJE ENTRE LISTAS Y ARCHIVOS
 nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario)
 {
     FILE * f = fopen(nombre, "rb");
@@ -384,7 +387,8 @@ void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro)  /// no se si f
     }
     fclose(f);
 }
-///FUNCIONES DE VALIDACION
+
+///VERIFICACIONES MODULARIZADAS
 int esValidoValor(int valor, int maximo)
 {
     if(valor <= 0 || valor > maximo)
