@@ -92,3 +92,5 @@ nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar){
     }
 }
 
+
+

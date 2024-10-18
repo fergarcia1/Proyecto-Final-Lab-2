@@ -19,6 +19,8 @@ nodoLibro* buscarUltimoLibro(nodoLibro* listaLibro);
 void muestraNodoLibro(nodoLibro * nodo);
 void muestraListaLibro(nodoLibro * listaLibro);
 void muestraUnLibroPorId(nodoLibro * listaLibro, int id);
+void muestraLibroPorAutor(nodoLibro * listaLibro);
+void muestraLibroPorCategoria(nodoLibro * listaLibro);
 
 
 
