@@ -24,6 +24,7 @@ int esValidoEmail(char *email);
 int esValidoPass(char *password);
 int verificacionAtras(char *atras);
 int esValidoValor(int valor, int maximo);
+int compararCadenasIgnorandoMayusculas(const char *str1, const char *str2);
 
 ///menus
 nodoUsuario * menuUsuario(nodoUsuario * user, nodoLibro * listaLibro, nodoUsuario * listaUsuarios, int idUsuarioActual,int idLibroActual);
@@ -421,4 +422,15 @@ int verificacionAtras(char *atras)
         return 1;
     }
     return 0;
+}
+
+int compararCadenasIgnorandoMayusculas(const char *str1, const char *str2) {
+    while (*str1 && *str2) {
+        if (tolower(*str1) != tolower(*str2)) {
+            return 0; // No son iguales
+        }
+        str1++;
+        str2++;
+    }
+    return *str1 == *str2; // Verifica si ambas cadenas terminan
 }
