@@ -176,3 +176,37 @@
 1729283046 c:\users\imaga\proyectofinallab 2\usuario.h
 	"NodoLibro.h"
 
+1729276336 source:c:\users\fermi\onedrive\desktop\proyectofinallab 2\libro.c
+	"Libro.h"
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+
+1729267708 c:\users\fermi\onedrive\desktop\proyectofinallab 2\libro.h
+
+1729283048 source:c:\users\fermi\onedrive\desktop\proyectofinallab 2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"NodoLibro.h"
+	"NodoUsuario.h"
+	"Libro.h"
+	"Usuario.h"
+
+1729267486 c:\users\fermi\onedrive\desktop\proyectofinallab 2\nodolibro.h
+	"Libro.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1729223702 c:\users\fermi\onedrive\desktop\proyectofinallab 2\nodousuario.h
+	"Usuario.h"
+	<conio.h>
+	"string.h"
+	<stdio.h>
+	<stdlib.h>
+
+1729283048 c:\users\fermi\onedrive\desktop\proyectofinallab 2\usuario.h
+	"NodoLibro.h"
+

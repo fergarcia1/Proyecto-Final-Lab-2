@@ -206,7 +206,7 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
         }
         else
         {
-            if (!esValidoEmail(auxUser.email))
+            if (!esValidoEmail(aux))
             {
                 printf("\nEmail invalido. Debe contener un '@' y '.com'.\n");
                 system("pause");

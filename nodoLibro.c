@@ -150,7 +150,7 @@ void muestraLibroPorCategoria(nodoLibro * listaLibro)
     int flag = 0;
     while(seg != NULL)
     {
-        if(compararCadenasIgnorandoMayusculas(aux, seg->libro.autor) == 1)
+        if(compararCadenasIgnorandoMayusculas(aux, seg->libro.categoria) == 1)
         {
             muestraNodoLibro(seg);
             flag = 1;
