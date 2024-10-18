@@ -23,10 +23,12 @@ void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro);
 int esValidoEmail(char *email);
 int esValidoPass(char *password);
 int verificacionAtras(char *atras);
+int esValidoValor(int valor, int maximo);
 
 ///menus
 nodoUsuario * menuUsuario(nodoUsuario * user, nodoLibro * listaLibro, nodoUsuario * listaUsuarios, int idUsuarioActual,int idLibroActual);
 void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual);
+void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual);
 
 int main()
 {
@@ -65,6 +67,13 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
     fflush(stdin);
     scanf("%i", &valor);
     system("cls");
+    if(esValidoValor(valor,3) == 0)
+    {
+        printf("\nPor favor introduzca un valor valido!\n");
+        system("pause");
+        menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+    }
+
     switch(valor)   ///Menu de logeo y creacion de cuenta
     {
     case 1: /// Log con cuenta ya registrada
@@ -169,29 +178,35 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
 {
     system("cls");
     int valor = 0, idBorrar = 0;
-    printf("----------------------------\n");
-    printf("Bienvenido %s",usuarioLoged->usuario.username);
-    printf("\n----------------------------\n");
-    printf("\n|1| Modificar datos");
-    printf("\n----------------------------\n");
+    printf("------------------------------------------\n");
+    printf("             Bienvenido %s!",usuarioLoged->usuario.username);
+    printf("\n------------------------------------------\n");
+    printf("|1| Modificar datos");
+    printf("\n------------------------------------------\n");
     printf("|2| Consulta libros por autor");
-    printf("\n----------------------------\n");
+    printf("\n------------------------------------------\n");
     printf("|3| Consulta libros por categoria");
-    printf("\n----------------------------\n");
-    printf("|4| Cerrar sesion");
-    printf("\n----------------------------\n");
+    printf("\n------------------------------------------\n");
+    printf("|4| Ver Libros disponibles");
+    printf("\n------------------------------------------\n");
+    printf("|5| Cerrar sesion");
+    printf("\n------------------------------------------\n");
     if(usuarioLoged->usuario.esAdmin == 1) ///solo se muestran estas opciones si el usuario es un admin
     {
-        printf("|5| Ver Usuarios registrados");
-        printf("\n----------------------------\n");
-        printf("|6| Dar de baja un usuario");
-        printf("\n----------------------------\n");
-        printf("|7| Dar de baja un libro");
-        printf("\n----------------------------\n");
+        printf("|6| Ver Usuarios registrados");
+        printf("\n------------------------------------------\n");
+        printf("|7| Dar de baja o de alta un usuario/libro");
+        printf("\n------------------------------------------\n");
     }
     printf("\n>");
     fflush(stdin);
     scanf("%i", &valor);
+    if(esValidoValor(valor,7) == 0)
+    {
+        printf("\nPor favor introduzca un valor valido!\n");
+        system("pause");
+        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
+    }
 
     switch(valor)
     {
@@ -215,79 +230,72 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
         break;
 
     case 4: /// cerrar sesion
+        system("cls");
+        muestraListaLibro(listaLibro);
+        printf("\n-----------------------\n");
+        system("pause");
+        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         return usuarioLoged;
         break;
 
-        /// FUNCIONES DE ADMIN
+    /// FUNCIONES DE ADMIN
     case 5: /// lista de usuarios
+        return usuarioLoged;
+        break;
+
+    case 6:
         muestraListaUsuario(listaUsuarios);
         printf("\n-----------------------\n");
         system("pause");
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
-
-    case 6: /// dar de baja un usuario
-        muestraListaUsuario(listaUsuarios);
-        printf("\n-----------------------\n");
-        printf("Id del usuario a dar de baja");
-        printf("\n-----------------------\n");
-        printf("\n>");
-        fflush(stdin);
-        scanf("%i", &idBorrar);
-        if(idBorrar > idUsuarioActual || idBorrar < 0) ///verifico que la id este entre 0 y las id validas
-        {
-            printf("\nLa id no existe!\n");
-            system("pause");
-            menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
-        }
-        else
-        {
-            nodoUsuario * userBaja = buscarIdUsuario(listaUsuarios,idBorrar); ///userBaja va a ser igual al nodo devuelto por buscarIdUsuario (NULL si no esta en la lista)
-            if(userBaja)
-            {
-                userBaja->usuario.eliminado = -1;
-            }
-            else
-            {
-                printf("\nOcurrio un error al dar de baja usuario.");
-            }
-        }
-        system("pause");
-        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
-        break;
-
-    case 7: /// dar de baja un libro
-        muestraListaLibro(listaLibro);
-        printf("\n-----------------------\n");
-        printf("Id del libro a dar de baja");
-        printf("\n-----------------------\n");
-        printf("\n>");
-        fflush(stdin);
-        scanf("%i", &idBorrar);
-        if(idBorrar > idLibroActual || idBorrar < 0) ///verifico que la id este entre 0 y las id validas
-        {
-            printf("\nLa id no existe!\n");
-            system("pause");
-            menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
-        }
-        else
-        {
-            nodoLibro * libroBaja = buscarIdLibro(listaLibro,idBorrar); ///userBaja va a ser igual al nodo devuelto por buscarIdLibro (NULL si no esta en la lista)
-            if(libroBaja)
-            {
-                libroBaja->libro.eliminado = -1;
-            }
-            else
-            {
-                printf("\nOcurrio un error al dar de baja libro.");
-            }
-        }
+    case 7:
+        menuAltaYBaja(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
         system("pause");
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
         break;
     }
     return usuarioLoged;
+}
 
+void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual)
+{
+    int valor = 0;
+    system("cls");
+    printf("--------------------------\n");
+    printf("|1| Dar de baja un usuario");
+    printf("\n--------------------------\n");
+    printf("|2| Dar de alta un usuario");
+    printf("\n--------------------------\n");
+    printf("|3| Dar de baja un libro");
+    printf("\n--------------------------\n");
+    printf("|4| Dar de alta un libro");
+    printf("\n--------------------------\n");
+    printf("\n>");
+    fflush(stdin);
+    scanf("%i", &valor);
+    if(esValidoValor(valor,4) == 0)
+    {
+        printf("\nPor favor introduzca un valor valido!\n");
+        system("pause");
+        menuAltaYBaja(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+    }
+    switch(valor)
+    {
+    case 1:
+        listaUsuarios = darDeBajaUsuario(listaUsuarios,idUsuarioActual);
+        break;
+
+    case 2:
+        listaUsuarios = darDeAltaUsuario(listaUsuarios,idUsuarioActual);
+        break;
+    case 3:
+        listaLibro = darDeBajaLibro(listaLibro,idLibroActual);
+        break;
+    case 4:
+        listaLibro = darDeAltaLibro(listaLibro,idLibroActual);
+        break;
+    }
 }
 
 nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario)
@@ -350,6 +358,15 @@ void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro)  /// no se si f
         }
     }
     fclose(f);
+}
+
+int esValidoValor(int valor, int maximo)
+{
+    if(valor <= 0 || valor > maximo)
+    {
+        return 0;
+    }
+    return 1;
 }
 
 int esValidoEmail(char *email)

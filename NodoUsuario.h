@@ -20,5 +20,6 @@ nodoUsuario * buscarUltimoUsuario(nodoUsuario* listaUsuarios);
 void muestraNodoUsuario(nodoUsuario * nodo);
 void muestraListaUsuario(nodoUsuario * listaUsuario);
 nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar); ///retorno NULL si no se encuentra el usuario
+void muestraListaUsuarioBaja(nodoUsuario * listaUsuario);
 
 #endif // NODOUSUARIO_H_INCLUDED

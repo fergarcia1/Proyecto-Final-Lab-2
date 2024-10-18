@@ -42,7 +42,22 @@ void muestraListaLibro(nodoLibro * listaLibro)
 {
     while(listaLibro)
     {
-        muestraNodoLibro(listaLibro);
+        if(listaLibro->libro.eliminado == 0)
+        {
+            muestraNodoLibro(listaLibro);
+        }
+        listaLibro = listaLibro->sig;
+    }
+}
+
+void muestraListaLibroBaja(nodoLibro * listaLibro)
+{
+    while(listaLibro)
+    {
+        if(listaLibro->libro.eliminado == -1)
+        {
+            muestraNodoLibro(listaLibro);
+        }
         listaLibro = listaLibro->sig;
     }
 }
@@ -124,9 +139,9 @@ void muestraLibroPorCategoria(nodoLibro * listaLibro)
 {
     char aux[20];
     system("cls");
-    printf("\n------------------------------------------------------------------");
+    printf("\n-----------------------------------------------------------------------------------------------------------------------");
     printf("\nCategoria por la cual desea filtrar los libros (Aventura, Drama, Ciencia ficcion, Clasicos, Romance, Ficcion, Suspenso)");
-    printf("\n------------------------------------------------------------------");
+    printf("\n-----------------------------------------------------------------------------------------------------------------------");
     printf("\n>");
     fflush(stdin);
     gets(aux);
@@ -147,3 +162,67 @@ void muestraLibroPorCategoria(nodoLibro * listaLibro)
         printf("No se encontraron libros de esa categoria: %s\n", aux);
     }
 }
+
+nodoLibro * darDeBajaLibro(nodoLibro * listaLibro,int idLibroActual)
+{
+    int idBorrar = 0;
+    muestraListaLibro(listaLibro);
+    printf("\n-----------------------\n");
+    printf("Id del libro a dar de baja");
+    printf("\n-----------------------\n");
+    printf("\n>");
+    fflush(stdin);
+    scanf("%i", &idBorrar);
+    if(idBorrar > idLibroActual || idBorrar < 0) ///verifico que la id este entre 0 y las id validas
+    {
+        printf("\nLa id no existe!\n");
+        system("pause");
+        darDeBajaLibro(listaLibro,idLibroActual);
+    }
+    else
+    {
+        nodoLibro * libroBaja = buscarIdLibro(listaLibro,idBorrar); ///userBaja va a ser igual al nodo devuelto por buscarIdUsuario (NULL si no esta en la lista)
+        if(libroBaja)
+        {
+            libroBaja->libro.eliminado = -1;
+        }
+        else
+        {
+            printf("\nOcurrio un error al dar de baja libro.");
+        }
+    }
+    return listaLibro;
+}
+
+nodoLibro * darDeAltaLibro(nodoLibro * listaLibro,int idLibroActual)
+{
+    system("cls");
+    int idSubir = 0;
+    muestraListaLibroBaja(listaLibro);
+    printf("\n-----------------------\n");
+    printf("Id del libro a dar de alta");
+    printf("\n-----------------------\n");
+    printf("\n>");
+    fflush(stdin);
+    scanf("%i", &idSubir);
+    if(idSubir > idLibroActual || idSubir < 0) ///verifico que la id este entre 0 y las id validas
+    {
+        printf("\nLa id no existe!\n");
+        system("pause");
+        darDeAltaLibro(listaLibro,idLibroActual);
+    }
+    else
+    {
+        nodoLibro * libroAlta = buscarIdLibro(listaLibro,idSubir); ///libroBaja va a ser igual al nodo devuelto por buscarIdLibro (NULL si no esta en la lista)
+        if(libroAlta)
+        {
+            libroAlta->libro.eliminado = 0;
+        }
+        else
+        {
+            printf("\nOcurrio un error al dar de baja usuario.");
+        }
+    }
+    return listaLibro;
+}
+

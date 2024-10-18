@@ -34,6 +34,7 @@ void muestraUnUsuario(stUsuario a);
 stUsuario modificarUsuario(stUsuario a, nodoLibro * listaLibro);
 void librosFavoritosUsuario(stUsuario usuario, nodoLibro * listaLibro);
 stUsuario modificarLibrosFavoritos(stUsuario usuario,int id,nodoLibro * listaLibro);
+void muestraUnUsuarioEliminado(stUsuario a);
 
 
 #endif // USUARIO_H_INCLUDED

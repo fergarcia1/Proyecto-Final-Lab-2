@@ -107,8 +107,7 @@ stUsuario cargarUsuario(int idUsuarioActual, char mail[])
 
 void muestraUnUsuario(stUsuario a)
 {
-    if(a.eliminado == 0)
-    {
+
         printf("\n-----------------------\n");
         printf("Usuario: %s\n",a.username);
         printf("Email: %s\n",a.email);
@@ -116,8 +115,9 @@ void muestraUnUsuario(stUsuario a)
         printf("Id: %i\n",a.idUsuario);
         printf("Es admin: %i\n",a.esAdmin);
         printf("\n-----------------------\n");
-    }
+
 }
+
 
 stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
 {
@@ -140,6 +140,12 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
     fflush(stdin);
     scanf("%i", &valor);
     system("cls");
+    if(esValidoValor(valor,5) == 0)
+    {
+        printf("\nPor favor introduzca un valor valido!\n");
+        system("pause");
+        modificarUsuario(usuario,listaLibro);
+    }
 
     switch(valor)
     {

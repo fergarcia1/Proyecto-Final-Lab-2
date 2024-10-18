@@ -1,25 +1,31 @@
 #include "NodoUsuario.h"
 
-nodoUsuario * inicLista(){
+nodoUsuario * inicLista()
+{
     return NULL;
 }
 
-nodoUsuario* buscarMailUsuario(nodoUsuario* listaUsuarios, char * mail){
+nodoUsuario* buscarMailUsuario(nodoUsuario* listaUsuarios, char * mail)
+{
     nodoUsuario * seg = listaUsuarios;
     int flag = 0;
     while(seg != NULL && flag == 0)
     {
-        if(strcmp(seg->usuario.email, mail) == 0){
+        if(strcmp(seg->usuario.email, mail) == 0)
+        {
             flag = 1;
         }
-        else{
+        else
+        {
             seg = seg->sig;
         }
     }
-    if(flag == 1 ){
+    if(flag == 1 )
+    {
         return seg;
     }
-    else{
+    else
+    {
         return NULL;
     }
 }
@@ -67,30 +73,110 @@ void muestraListaUsuario(nodoUsuario * listaUsuario)
 {
     while(listaUsuario)
     {
-        muestraNodoUsuario(listaUsuario);
+        if(listaUsuario->usuario.eliminado == 0)
+        {
+            muestraNodoUsuario(listaUsuario);
+        }
         listaUsuario = listaUsuario->sig;
     }
 }
 
-nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar){
+void muestraListaUsuarioBaja(nodoUsuario * listaUsuario)
+{
+    while(listaUsuario)
+    {
+        if(listaUsuario->usuario.eliminado == -1){
+            muestraNodoUsuario(listaUsuario);
+        }
+        listaUsuario = listaUsuario->sig;
+    }
+}
+
+nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar)
+{
     nodoUsuario * seg = listaUsuarios;
     int flag = 0;
     while(seg != NULL && flag == 0)
     {
-        if(seg->usuario.idUsuario == idBorrar){
+        if(seg->usuario.idUsuario == idBorrar)
+        {
             flag = 1;
         }
-        else{
+        else
+        {
             seg = seg->sig;
         }
     }
-    if(flag == 1 ){
+    if(flag == 1 )
+    {
         return seg; ///retorno el nodo si lo encuentro
     }
-    else{
+    else
+    {
         return NULL;
     }
 }
 
+nodoUsuario * darDeBajaUsuario(nodoUsuario * listaUsuarios,int idUsuarioActual)
+{
+    int idBorrar = 0;
+    muestraListaUsuario(listaUsuarios);
+    printf("\n-----------------------\n");
+    printf("Id del usuario a dar de baja");
+    printf("\n-----------------------\n");
+    printf("\n>");
+    fflush(stdin);
+    scanf("%i", &idBorrar);
+    if(idBorrar > idUsuarioActual || idBorrar < 0) ///verifico que la id este entre 0 y las id validas
+    {
+        printf("\nLa id no existe!\n");
+        system("pause");
+        darDeBajaUsuario(listaUsuarios,idUsuarioActual);
+    }
+    else
+    {
+        nodoUsuario * userBaja = buscarIdUsuario(listaUsuarios,idBorrar); ///userBaja va a ser igual al nodo devuelto por buscarIdUsuario (NULL si no esta en la lista)
+        if(userBaja)
+        {
+            userBaja->usuario.eliminado = -1;
+        }
+        else
+        {
+            printf("\nOcurrio un error al dar de baja usuario.");
+        }
+    }
+    return listaUsuarios;
+}
 
+nodoUsuario * darDeAltaUsuario(nodoUsuario * listaUsuarios,int idUsuarioActual)
+{
+    system("cls");
+    int idSubir = 0;
+    muestraListaUsuarioBaja(listaUsuarios);
+    printf("\n-----------------------\n");
+    printf("Id del usuario a dar de alta");
+    printf("\n-----------------------\n");
+    printf("\n>");
+    fflush(stdin);
+    scanf("%i", &idSubir);
+    if(idSubir > idUsuarioActual || idSubir < 0) ///verifico que la id este entre 0 y las id validas
+    {
+        printf("\nLa id no existe!\n");
+        system("pause");
+        darDeAltaUsuario(listaUsuarios,idUsuarioActual);
+    }
+    else
+    {
+        nodoUsuario * userAlta = buscarIdUsuario(listaUsuarios,idSubir); ///userBaja va a ser igual al nodo devuelto por buscarIdUsuario (NULL si no esta en la lista)
+        if(userAlta)
+        {
+            userAlta->usuario.eliminado = 0;
+        }
+        else
+        {
+            printf("\nOcurrio un error al dar de baja usuario.");
+        }
+    }
+    return listaUsuarios;
+}
 
