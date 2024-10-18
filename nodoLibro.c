@@ -35,9 +35,7 @@ nodoLibro* buscarUltimoLibro(nodoLibro* listaLibro)
 
 void muestraNodoLibro(nodoLibro * nodo)
 {
-    printf("(Id: %d)", nodo->libro.idLibro);
-    printf(" Titulo: %s", nodo->libro.titulo);
-    printf(" Autor: %s\n", nodo->libro.autor);
+    muestraLibro(nodo->libro);
 }
 
 void muestraListaLibro(nodoLibro * listaLibro)

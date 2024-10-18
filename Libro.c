@@ -4,3 +4,8 @@
 #include <stdlib.h>
 #include <conio.h>
 
+void muestraLibro(stLibro libro){
+    printf("(Id:%d)", libro.idLibro);
+    printf(" %s ", libro.titulo);
+    printf("de %s\n", libro.autor);
+}

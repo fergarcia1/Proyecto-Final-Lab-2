@@ -12,5 +12,6 @@ typedef struct{
     int eliminado; /// 0 si está activo - 1 si está eliminado
 }stLibro;
 
+void muestraLibro(stLibro libro);
 
 #endif // LIBRO_H_INCLUDED

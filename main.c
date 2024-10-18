@@ -11,12 +11,20 @@
 ///sKtzqppz
 
 
+///pasaje de archivo a nuestras listas
 nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario);
 nodoLibro * archivoToListaLibro(char nombre[], nodoLibro * listaLibro);
+
+///pasaje de las listas a los archivos
 void listaToArchivoUsuarios(char nombre[], nodoUsuario * listaUsuario);
 void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro);
+
+///funciones de verificacion
 int esValidoEmail(char *email);
 int esValidoPass(char *password);
+int verificacionAtras(char *atras);
+
+///menus
 nodoUsuario * menuUsuario(nodoUsuario * user, nodoLibro * listaLibro, nodoUsuario * listaUsuarios, int idUsuarioActual);
 void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro);
 
@@ -31,8 +39,8 @@ int main()
 
     nodoUsuario* aux = buscarUltimoUsuario(listaUsuarios);
     int idUsuarioActual = aux->usuario.idUsuario;
-
     menuLogin(listaUsuarios, idUsuarioActual,listaLibro); ///paso la lista al menu y el numero de ID actual, en caso de que deba crear un nuevo user
+
     ///PASAJE DE LISTA AL ARCHIVO
     listaToArchivoLibros("libros.dat",listaLibro);
     listaToArchivoUsuarios("usuarios.dat",listaUsuarios);
@@ -162,15 +170,15 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
     printf("----------------------------\n");
     printf("Bienvenido %s",usuarioLoged->usuario.username);
     printf("\n----------------------------\n");
-    printf("\n1| Modificar datos.");
+    printf("\n|1| Modificar datos.");
     printf("\n----------------------------\n");
-    printf("2| Cerrar sesion.");
+    printf("|2| Cerrar sesion.");
     printf("\n----------------------------\n");
     if(usuarioLoged->usuario.esAdmin == 1) ///solo se muestran estas opciones si el usuario es un admin
     {
-        printf("3| Ver Usuarios registrados.");
+        printf("|3| Ver Usuarios registrados.");
         printf("\n----------------------------\n");
-        printf("4| Dar de baja usuario.");
+        printf("|4| Dar de baja usuario.");
         printf("\n----------------------------\n");
     }
     printf("\n>");
@@ -207,7 +215,7 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
         }
         else
         {
-            nodoUsuario * userBaja = buscarIdUsuario(listaUsuarios,idBorrar);
+            nodoUsuario * userBaja = buscarIdUsuario(listaUsuarios,idBorrar); ///userBaja va a ser igual al nodo devuelto por buscarIdUsuario (NULL si no esta en la lista)
             if(userBaja)
             {
                 userBaja->usuario.eliminado = -1;
@@ -215,6 +223,7 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
             else
             {
                 printf("\nOcurrio un error al dar de baja usuario.");
+                system("pause");
             }
         }
         menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual);
@@ -287,7 +296,7 @@ void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro)  /// no se si f
 
 int esValidoEmail(char *email)
 {
-    /// Verifica que contenga un @ y un .com
+    /// verifica que tenga una @ y un .com
     const char *at = strchr(email, '@');
     if (at == NULL || strstr(at, ".com") == NULL)
     {
@@ -298,46 +307,25 @@ int esValidoEmail(char *email)
 
 int esValidoPass(char *password)
 {
-    int has_upper = 0, has_lower = 0;
+    int hasUpper = 0, hasLower = 0;
+
     for (int i = 0; password[i] != '\0'; i++)
     {
         if (isupper(password[i]))
         {
-            has_upper = 1;
+            hasUpper = 1;
         }
         if (islower(password[i]))
         {
-            has_lower = 1;
+            hasLower = 1;
         }
     }
-    return has_upper && has_lower;
+    return hasUpper && hasLower;
 }
-void mostrarLibrosDesdeArchivo()
- {
-
-    FILE *archivo = fopen("libros.dat", "rb");  // Abrir archivo en modo binario
-    printf("aca estoy");
-    if (archivo == NULL) {
-        printf("Error al abrir el archivo.\n");
-    }else
-    {
-
-        stLibro libro;
-        while (fread(&libro, sizeof(stLibro), 1, archivo) == 1) {
-            // Mostrar datos del libro
-            printf("ID Libro: %d\n", libro.idLibro);
-            printf("Título: %s\n", libro.titulo);
-            printf("Editorial: %s\n", libro.editorial);
-            printf("Autor: %s\n", libro.autor);
-            printf("Categoría: %s\n", libro.categoria);
-            printf("Valoración: %.2f\n", libro.valoracion);
-            printf("Eliminado: %d\n", libro.eliminado ? 1 : 0);  // Mostrar 1 si está eliminado, 0 si está activo
-
-            printf("\n--------------------------------\n");
-        }
+int verificacionAtras(char *atras)
+{
+    if(strcmp(atras, "atras") == 0){
+        return 1;
     }
-
-    fclose(archivo);
+    return 0;
 }
-
-

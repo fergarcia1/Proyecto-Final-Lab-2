@@ -19,6 +19,6 @@ nodoUsuario * agregarAlFinalUsuario(nodoUsuario* lista, nodoUsuario * nuevo);
 nodoUsuario * buscarUltimoUsuario(nodoUsuario* listaUsuarios);
 void muestraNodoUsuario(nodoUsuario * nodo);
 void muestraListaUsuario(nodoUsuario * listaUsuario);
-nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar);
+nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar); ///retorno NULL si no se encuentra el usuario
 
 #endif // NODOUSUARIO_H_INCLUDED

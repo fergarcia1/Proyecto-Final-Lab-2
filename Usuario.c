@@ -124,72 +124,101 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
     system("cls");
     stUsuario auxUser = usuario;
     int valor = 0, idAux = 0;
+    char aux[20];
     printf("------------------------------\n");
-    printf("1| Modificar nombre de usuario.");
+    printf("1| Modificar nombre de usuario");
     printf("\n------------------------------\n");
-    printf("2| Modificar contrasenia.");
+    printf("2| Modificar contrasenia");
     printf("\n------------------------------\n");
-    printf("3| Modificar email.");
+    printf("3| Modificar email");
     printf("\n------------------------------\n");
-    printf("4| Modificar libros favoritos.");
+    printf("4| Modificar libros favoritos");
     printf("\n------------------------------\n");
-    printf("5| Modificar dni.");
+    printf("5| Volver al menu");
     printf("\n------------------------------\n");
-    printf("6| Volver al menu.");
-    printf("\n------------------------------\n");
-
     printf("\n>");
     fflush(stdin);
     scanf("%i", &valor);
+    system("cls");
 
     switch(valor)
     {
-    case 1:
-        printf("\nNuevo nombre de usuario: ");
+    case 1: /// cambio username
+
+        printf("\nSu usuario actual: %s ", auxUser.username);
+        printf("(Introduzca su nuevo usuario o escriba 'atras' para volver atras!)\n");
+        printf("\n> ");
         fflush(stdin);
-        gets(auxUser.username);
-        printf("\nNombre de usuario cambiado correctamente.\n");
-        system("pause");
-        return auxUser;
-        break;
-    case 2:
-        printf("\nNueva contrasenia: ");
-        fflush(stdin);
-        gets(auxUser.password);
-        if(!esValidoPass(auxUser.password))
-        {
-            printf("La contraseña debe contener al menos 1 mayuscula y 1 minuscula.\n");
-            system("pause");
-            modificarUsuario(usuario,listaLibro);
+        gets(aux);
+        if(verificacionAtras(aux) == 1){ ///verifico si el usuario desea volver atras para no generar el cambio
+            return auxUser; ///regreso al usuario sin cambios
         }
         else
         {
-            printf("\nContraseña cambiada correctamente.\n");
+            strcpy(auxUser.username, aux);
+            printf("\nNombre de usuario cambiado correctamente.\n");
             system("pause");
             return auxUser;
         }
         break;
-    case 3:
-        printf("\nNuevo email: ");
+    case 2: /// cambio pass
+        printf("\nSu contrasenia actual: %s ", auxUser.password);
+        printf("(Introduzca su nueva contraseña o 'atras' para volver atras!)\n");
+        printf("\n> ");
         fflush(stdin);
-        gets(auxUser.email);
-        if (!esValidoEmail(auxUser.email))
+        gets(aux);
+        if(verificacionAtras(aux) == 1)
         {
-            printf("\nEmail inválido. Debe contener un '@' y '.com'.\n");
-            system("pause");
-            modificarUsuario(usuario,listaLibro);
+            return auxUser; ///regreso al usuario sin cambios
         }
         else
         {
-            printf("Email cambiado correctamente.\n");
-            system("pause");
-            return auxUser;
+            if(!esValidoPass(auxUser.password))
+            {
+                printf("\nLa contraseña debe contener al menos 1 mayuscula y 1 minuscula.\n");
+                system("pause");
+                modificarUsuario(usuario,listaLibro);
+            }
+            else
+            {
+                strcpy(auxUser.password, aux);
+                printf("\nContrasenia cambiada correctamente.\n");
+                system("pause");
+                return auxUser;
+            }
         }
         break;
-    case 4:
+    case 3:  ///cambio email
+        printf("\nSu email actual: %s ", auxUser.email);
+        printf("(Introduzca su nuevo email o 'atras' para volver atras!)\n");
+        printf("\n> ");
+        fflush(stdin);
+        gets(aux);
+        if(verificacionAtras(aux) == 1)
+        {
+            return auxUser; ///regreso al usuario sin cambios
+        }
+        else
+        {
+            if (!esValidoEmail(auxUser.email))
+            {
+                printf("\nEmail invalido. Debe contener un '@' y '.com'.\n");
+                system("pause");
+                modificarUsuario(usuario,listaLibro);
+            }
+            else
+            {
+                strcpy(auxUser.email, aux);
+                printf("Email cambiado correctamente.\n");
+                system("pause");
+                return auxUser;
+            }
+        }
+        break;
+    case 4: ///cambio libros
         printf("\nEstos son tus libros favoritos ");
         librosFavoritosUsuario(auxUser,listaLibro);
-        printf("\nIntroduzca la id de los libros a agregar/quitar: ");
+        printf("\nIntroduzca la Id de los libros a agregar/quitar, si la id se encuentra en su lista, sera eliminada, si no se agregara el libro\n");
         printf("\n>");
         fflush(stdin);
         scanf("%i", &idAux);
@@ -197,14 +226,6 @@ stUsuario modificarUsuario(stUsuario usuario, nodoLibro * listaLibro)
         return auxUser;
         break;
     case 5:
-        printf("\nNuevo dni: ");
-        fflush(stdin);
-        gets(auxUser.dni);
-        printf("\Dni cambiado correctamente.\n");
-        system("pause");
-        return auxUser;
-        break;
-    case 6:
         return auxUser;
         break;
     }
@@ -216,7 +237,6 @@ void librosFavoritosUsuario(stUsuario usuario, nodoLibro * listaLibro)
     printf("(%d):\n", usuario.validosLibrosFavs);
     for (int i = 0; i < usuario.validosLibrosFavs; i++)
     {
-        //printf("  Libro ID: %d\n", usuario.librosFavoritos[i]);
         muestraUnLibroPorId(listaLibro,usuario.librosFavoritos[i]);
     }
 }

@@ -142,15 +142,15 @@
 	<stdio.h>
 	<stdlib.h>
 
-1729188863 source:c:\users\imaga\proyectofinallab 2\libro.c
+1729212842 source:c:\users\imaga\proyectofinallab 2\libro.c
 	"Libro.h"
 	<stdio.h>
 	<stdlib.h>
 	<conio.h>
 
-1729188863 c:\users\imaga\proyectofinallab 2\libro.h
+1729212097 c:\users\imaga\proyectofinallab 2\libro.h
 
-1729198651 source:c:\users\imaga\proyectofinallab 2\main.c
+1729214989 source:c:\users\imaga\proyectofinallab 2\main.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
@@ -166,7 +166,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1729196938 c:\users\imaga\proyectofinallab 2\nodousuario.h
+1729212734 c:\users\imaga\proyectofinallab 2\nodousuario.h
 	"Usuario.h"
 	<conio.h>
 	"string.h"

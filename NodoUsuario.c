@@ -85,7 +85,7 @@ nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar){
         }
     }
     if(flag == 1 ){
-        return seg;
+        return seg; ///retorno el nodo si lo encuentro
     }
     else{
         return NULL;
