@@ -12,7 +12,7 @@ typedef struct{
     int eliminado; /// 0 si está activo - 1 si está eliminado
 }stLibro;
 
-void muestraLibro(stLibro libro);
-stLibro modificarLibros(stLibro libro/*,nodoLibro * listaLibro*/);
+
+void mostrarLibro(stLibro libro);
 
 #endif // LIBRO_H_INCLUDED

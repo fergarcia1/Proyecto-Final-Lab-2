@@ -2,6 +2,7 @@
 #define NODOLIBRO_H_INCLUDED
 
 #include "Libro.h"
+#include "comentario.h"
 #include <conio.h>
 #include "string.h"
 #include <stdio.h>
@@ -11,12 +12,13 @@
 typedef struct{
     stLibro libro;
     struct nodoLibro* sig;
+    struct nodoComentario * coment;
 }nodoLibro;
 
 nodoLibro * crearNodoLibro(stLibro libro);
 nodoLibro * agregarAlFinalLibro(nodoLibro * listaLibro, nodoLibro * nuevo);
 nodoLibro* buscarUltimoLibro(nodoLibro* listaLibro);
-void muestraNodoLibro(nodoLibro * nodo);
+void muestraNodoLibro(stLibro libro);
 void muestraListaLibro(nodoLibro * listaLibro);
 void muestraUnLibroPorId(nodoLibro * listaLibro, int id);
 void muestraLibroPorAutor(nodoLibro * listaLibro);

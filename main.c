@@ -1,21 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <time.h>
 
+///Carolina_6664@yahoo.com
+///3c0NoqBrjZ
+///Juan_0434@hotmail.com
+///C5OLcY94Y
 #include "NodoLibro.h"
 #include "NodoUsuario.h"
 #include "Libro.h"
 #include "Usuario.h"
+#include "comentario.h"
 
-///Carolina_6664@yahoo.com
-///3c0NoqBrjZ
+typedef struct{
+    char titulo[100];
+    char editorial[50];
+    char autor[50];
+    char categoria[50];
+    float valoracion;
+    int idComentario;  /// único, autoincremental
+    int idLibro;
+    int idUsuario;
+    char tituloComentario[100];
+    char descripcion[500];
+    int puntaje; /// de 0 a 5 "estrellas"
+    char fechaComentario[20]; /// o se puede hacer con dia, mes, anio.
+    int eliminado; /// 0 si está activo - 1 si está eliminado
+} stRegistro;
 
 
-///pasaje de archivo a nuestras listas
-nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario);
-nodoLibro * archivoToListaLibro(char nombre[], nodoLibro * listaLibro);
+///pasaje de archivo a nuestra lista/arbol
+stLibro refactorizacionLibro(stRegistro reg);
+stComentario refactorizacionComentario(stRegistro reg);
+nodoUsuario *archivoToArbolUsuarios(char nombre[], nodoUsuario *arbolUsuarios);
+nodoLibro *  archivoToLDL(char nombreArchivo[], nodoLibro * ldl);
+nodoLibro * alta(nodoLibro * ldl, stLibro libro, stComentario comentario);
 
-///pasaje de las listas a los archivos
+///pasaje de la lista/arbol a los archivos
 void listaToArchivoUsuarios(char nombre[], nodoUsuario * listaUsuario);
 void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro);
 
@@ -27,36 +49,41 @@ int esValidoValor(int valor, int maximo);
 int compararCadenasIgnorandoMayusculas(const char *str1, const char *str2);
 
 ///menus
-nodoUsuario * menuUsuario(nodoUsuario * user, nodoLibro * listaLibro, nodoUsuario * listaUsuarios, int idUsuarioActual,int idLibroActual);
-void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual);
-void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual);
+nodoUsuario * menuUsuario(nodoUsuario * user, nodoLibro * listaLibro, nodoUsuario * arbolUsuarios, int idUsuarioActual,int idLibroActual);
+void menuLogin(nodoUsuario * arbolUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual);
+void menuAltaYBaja(nodoUsuario * arbolUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual);
+void menuLibros(nodoLibro * listaLibro, int idLibroActual,int idUsuarioActual);
 
 int main()
 {
+    srand(time(NULL));
+    nodoUsuario * arbolUsuarios = inicArbol();
+    nodoLibro * ldl = inicArbol();
 
-    nodoUsuario * listaUsuarios = inicLista();
-    nodoLibro * listaLibro = inicLista();
     ///PASAJE DEL ARCHIVO A LA LISTA
-    listaUsuarios = archivoToListaUsuario("usuarios.dat",listaUsuarios);
-    listaLibro = archivoToListaLibro("libros.dat",listaLibro);
 
-    nodoUsuario * auxUsuario = buscarUltimoUsuario(listaUsuarios);
-    nodoLibro * auxLibro = buscarUltimoLibro(listaLibro);
+    arbolUsuarios = archivoToArbolUsuarios("usuarios.dat",arbolUsuarios);
+    ldl = archivoToLDL("libros.dat",ldl);
+
+    ///MENU Y BUSQUEDA DE ID
+
+    nodoUsuario * auxUsuario = buscarUltimoUsuario(arbolUsuarios);
+    nodoLibro * auxLibro = buscarUltimoLibro(ldl);
     int idUsuarioActual = auxUsuario->usuario.idUsuario, idLibroActual = auxLibro->libro.idLibro; ///id del ultimo libro y usuario
-    menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual); ///paso la lista de usuarios al menu y el numero de ID actual de usuario y libro, y la lista de libros
+    menuLogin(arbolUsuarios,idUsuarioActual,ldl,idLibroActual); ///paso la lista de usuarios al menu y el numero de ID actual de usuario y libro, y la lista de libros
 
     ///PASAJE DE LISTA AL ARCHIVO
-    listaToArchivoLibros("libros.dat",listaLibro);
-    listaToArchivoUsuarios("usuarios.dat",listaUsuarios);
+    guardarCambiosEnArchivo(ldl);
+    arbolToArchivoUsuarios("usuarios.dat",arbolUsuarios);
     return 0;
 }
 ///MENU INICIAL CON SIGN IN & REGISTRATION
-void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro,int idLibroActual)
+void menuLogin(nodoUsuario * arbolUsuarios, int idUsuarioActual, nodoLibro * listaLibro,int idLibroActual)
 {
     system("cls");
     int valor = 0, flag = 0; ///Valor es para el switch del menu, flag es para el log in
     char mail[20], pass[20]; /// Mail y contraseña para verificar el log in
-    nodoUsuario * userAux = inicLista();
+    nodoUsuario * userAux = inicArbol();
     printf("--------------------------\n");
     printf("|1| Ingrese con su cuenta");
     printf("\n--------------------------\n");
@@ -72,7 +99,7 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
     {
         printf("\nPor favor introduzca un valor valido!\n");
         system("pause");
-        menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+        menuLogin(arbolUsuarios,idUsuarioActual,listaLibro,idLibroActual);
     }
 
     switch(valor)   ///Menu de logeo y creacion de cuenta
@@ -88,11 +115,11 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
         {
             printf("\nEmail invalido. Debe contener un '@' y '.com'.\n");
             system("pause");
-            menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+            menuLogin(arbolUsuarios,idUsuarioActual,listaLibro,idLibroActual);
         }
         else
         {
-            userAux = buscarMailUsuario(listaUsuarios, &mail);
+            userAux = buscarMailUsuario(arbolUsuarios, &mail);
             if(userAux->usuario.eliminado == 0) /// verifico que no este eliminado
             {
                 if(userAux)  ///Si lo encontro en la funcion buscarMailUsuario no deberia ser null, asi que pido la pass
@@ -108,7 +135,7 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
                         if(strcmp(userAux->usuario.password, pass) == 0)
                         {
                             ///Ya comprobado el mail, si introduce bien la pass, al menu de usuarios(en proceso)
-                            userAux = menuUsuario(userAux,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
+                            userAux = menuUsuario(userAux,listaLibro,arbolUsuarios,idUsuarioActual,idLibroActual);
                             flag = 4;
                         }
                         else /// contraseña incorrecta
@@ -122,7 +149,7 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
                 else /// la funcion devolvio NULL
                 {
                     printf("\nEmail incorrecto, intente una vez mas o cree una cuenta nueva.\n");
-                    menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual); ///en caso de que no sea valido el mail, lo mando devuelta al principio
+                    menuLogin(arbolUsuarios,idUsuarioActual,listaLibro,idLibroActual); ///en caso de que no sea valido el mail, lo mando devuelta al principio
                 }
             }
             else ///el usuario se encuentra dado de baja
@@ -143,27 +170,27 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
         {
             printf("\nEmail inválido. Debe contener un '@' y '.com'.\n");
             system("pause");
-            menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+            menuLogin(arbolUsuarios,idUsuarioActual,listaLibro,idLibroActual);
         }
         else
         {
-            userAux = buscarMailUsuario(listaUsuarios, mail); ///busco que el mail no se encuentre registrado previamente, funcion retorna el nodo si coincide y NULL si no encuentra el mail
+            userAux = buscarMailUsuario(arbolUsuarios, mail); ///busco que el mail no se encuentre registrado previamente, funcion retorna el nodo si coincide y NULL si no encuentra el mail
 
             if(!userAux)  ///si la funcion anterior retorno null, significa que el mail no esta utilizado, y se prosigue con la creacion de usuario
             {
                 stUsuario usuarioAux = cargarUsuario(&idUsuarioActual,mail); ///carga manual de usuario
 
-                nodoUsuario * nuevoNodoUsuario = crearNodoUsuario(usuarioAux); ///creacion de nodo con usuario anterior
+                nodoUsuario * nuevoNodoUsuario = CrearNodoArbol(usuarioAux); ///creacion de nodo con usuario anterior
 
-                listaUsuarios = agregarAlFinalUsuario(listaUsuarios, nuevoNodoUsuario); ///agrego al final de la lista el nodoNuevo
+                arbolUsuarios = InsertarNodoArbol(arbolUsuarios, usuarioAux); ///agrego al final de la lista el nodoNuevo
 
-                userAux = menuUsuario(nuevoNodoUsuario,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual); /// se rompe aca hay que ver porque
+                userAux = menuUsuario(nuevoNodoUsuario,listaLibro,arbolUsuarios,idUsuarioActual,idLibroActual); /// se rompe aca hay que ver porque
             }
             else
             {
                 printf("\nEl mail ya se encuentra registrado, intente nuevamente.\n");
                 system("pause");
-                menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+                menuLogin(arbolUsuarios,idUsuarioActual,listaLibro,idLibroActual);
             }
         }
         break;
@@ -171,10 +198,10 @@ void menuLogin(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * lis
         return 0;
         break;
     }
-    menuLogin(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+    menuLogin(arbolUsuarios,idUsuarioActual,listaLibro,idLibroActual);
 }
 ///MENU LOGGED USER
-nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, nodoUsuario * listaUsuarios, int idUsuarioActual, int idLibroActual)
+nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, nodoUsuario * arbolUsuarios, int idUsuarioActual, int idLibroActual)
 {
     system("cls");
     int valor = 0, idBorrar = 0;
@@ -193,7 +220,7 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
         printf("\n------------------------------------------\n");
         printf("|4| Ver Usuarios registrados");
         printf("\n------------------------------------------\n");
-        printf("|5| Dar de baja o de alta un usuario/libro");
+        printf("|5| Dar de baja o de alta un usuario/libro/comentario");
         printf("\n------------------------------------------\n");
     }
     printf("\n>");
@@ -203,18 +230,18 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
     {
         printf("\nPor favor introduzca un valor valido!\n");
         system("pause");
-        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
+        menuUsuario(usuarioLoged,listaLibro,arbolUsuarios,idUsuarioActual,idLibroActual);
     }
     switch(valor)
     {
     case 1: ///modificar datos
         usuarioLoged->usuario = modificarUsuario(usuarioLoged->usuario,listaLibro);///Modificamos datos del usuario y se actualiza el archivo al finalizar
-        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
+        menuUsuario(usuarioLoged,listaLibro,arbolUsuarios,idUsuarioActual,idLibroActual);
         break;
 
     case 2: /// consultar libros por autor
-        menuLibros(listaLibro);///Ingresamos al menu de libros
-        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
+        menuLibros(listaLibro,idLibroActual,usuarioLoged->usuario.idUsuario);///Ingresamos al menu de libros
+        menuUsuario(usuarioLoged,listaLibro,arbolUsuarios,idUsuarioActual,idLibroActual);
         break;
 
     case 3: /// cerrar sesion
@@ -223,24 +250,25 @@ nodoUsuario * menuUsuario(nodoUsuario * usuarioLoged, nodoLibro * listaLibro, no
 
     /// FUNCIONES DE ADMIN
     case 4:/// lista de usuarios
-        muestraListaUsuario(listaUsuarios); ///Ver data de usuarios
+        mostrarArbolInOrder(arbolUsuarios); ///Ver data de usuarios
         printf("\n-----------------------\n");
         system("pause");
-        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
+        menuUsuario(usuarioLoged,listaLibro,arbolUsuarios,idUsuarioActual,idLibroActual);
         break;
     case 5: /// menu alta y baja usuarios y libros
-        menuAltaYBaja(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);///Funcion para dar de baja y alta un usuario o libro
+        menuAltaYBaja(arbolUsuarios,idUsuarioActual,listaLibro,idLibroActual);///Funcion para dar de baja y alta un usuario o libro
         system("pause");
-        menuUsuario(usuarioLoged,listaLibro,listaUsuarios,idUsuarioActual,idLibroActual);
+        menuUsuario(usuarioLoged,listaLibro,arbolUsuarios,idUsuarioActual,idLibroActual);
         break;
     }
     return usuarioLoged;
 }
 
 ///MENU DE LIBROS
-void menuLibros(nodoLibro * listaLibro){
+void menuLibros(nodoLibro * ldl, int idLibroActual,int idUsuarioActual)
+{
     system("cls");
-    int valor = 0;
+    int valor = 0, idComentario = 0;
     printf("-----------------------------------\n");
     printf("|1| Consulta libros por autor");
     printf("\n-----------------------------------\n");
@@ -248,44 +276,94 @@ void menuLibros(nodoLibro * listaLibro){
     printf("\n-----------------------------------\n");
     printf("|3| Ver todos los libros disponibles");
     printf("\n-----------------------------------\n");
-    printf("|4| Volver al menu de usuario");
+    printf("|4| Agregar un comentario a un libro");
+    printf("\n-----------------------------------\n");
+    printf("|5| Ver comentarios de un libro");
+    printf("\n-----------------------------------\n");
+    printf("|6| Modificar un comentario propio");
+    printf("\n-----------------------------------\n");
+    printf("|7| Eliminar un comentario propio");
+    printf("\n-----------------------------------\n");
+    printf("|8| Volver al menu de usuario");
     printf("\n-----------------------------------\n");
     printf("\n>");
     fflush(stdin);
     scanf("%i", &valor);
-    if(esValidoValor(valor,4) == 0)
+    if(esValidoValor(valor,8) == 0)
     {
         printf("\nPor favor introduzca un valor valido!\n");
         system("pause");
-        menuLibros(listaLibro);
+        menuLibros(ldl,idLibroActual, idUsuarioActual);
     }
-    switch(valor){
+    switch(valor)
+    {
     case 1:
-        muestraLibroPorAutor(listaLibro);/// Se verifica que el autor se encuentre dentro del archivo y muestra libros
+        muestraLibroPorAutor(ldl);/// Se verifica que el autor se encuentre dentro del archivo y muestra libros
         system("pause");
-        menuLibros(listaLibro);
+        menuLibros(ldl,idLibroActual,idUsuarioActual);
         break;
     case 2:
-        muestraLibroPorCategoria(listaLibro);///Se verifica que se encuentre la categoria y libros, luego se muestra
+        muestraLibroPorCategoria(ldl);///Se verifica que se encuentre la categoria y libros, luego se muestra
         system("pause");
-        menuLibros(listaLibro);
+        menuLibros(ldl,idLibroActual,idUsuarioActual);
         break;
     case 3:
         system("cls");
-        muestraListaLibro(listaLibro); ///mostramos todos los libros (que esten dados de alta)
+        muestraListaLibro(ldl); ///mostramos todos los libros (que esten dados de alta)
         printf("\n-----------------------\n");
         system("pause");
-        menuLibros(listaLibro);
+        menuLibros(ldl,idLibroActual,idUsuarioActual);
         break;
     case 4:
+        system("cls");
+        printf("Id del libro que desea comentar");
+        printf("\n>");
+        fflush(stdin);
+        scanf("%i", &idComentario);
+        if (idComentario <= 0 || idComentario > idLibroActual)  ///verifico que la id este entre 0 y las id validas
+        {
+            printf("\nLa id no existe!\n");
+            system("pause");
+            menuLibros(ldl,idLibroActual,idUsuarioActual);
+        }
+        nodoLibro * libroABuscar = buscarIdLibro(ldl, idComentario);
+        stComentario comentario = crearComentario(idComentario,idUsuarioActual);
+        ldl = alta(ldl,libroABuscar->libro,comentario);
+        break;
+    case 5:
+        system("cls");
+        printf("Id del libro que desea ver comentarios");
+        printf("\n>");
+        fflush(stdin);
+        scanf("%i", &idComentario);
+        if (idComentario <= 0 || idComentario > idLibroActual)  ///verifico que la id este entre 0 y las id validas
+        {
+            printf("\nLa id no existe!\n");
+            system("pause");
+            menuLibros(ldl,idLibroActual,idUsuarioActual);
+        }
+        nodoLibro * libroAMostrar = buscarIdLibro(ldl, idComentario);
+        mostrarListaComentarios(libroAMostrar->coment);
+        system("pause");
+        break;
+    case 6:
+        modificarComentariosPropios(ldl,idUsuarioActual,idLibroActual);
+        system("pause");
+        break;
+    case 7:
+        eliminarComentariosPropios(ldl,idUsuarioActual,idLibroActual);
+        system("pause");
+        break;
+    case 8:
         return 0;
         break;
     }
 }
 ///MENU DAR DE BAJA / ALTA USUARIO / LIBRO
-void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro * listaLibro, int idLibroActual)
+void menuAltaYBaja(nodoUsuario * arbolUsuarios, int idUsuarioActual, nodoLibro * ldl, int idLibroActual)
 {
     int valor = 0;
+    int idBuscar =0;
     system("cls");
     printf("--------------------------\n");
     printf("|1| Dar de baja un usuario");
@@ -296,40 +374,236 @@ void menuAltaYBaja(nodoUsuario * listaUsuarios, int idUsuarioActual, nodoLibro *
     printf("\n--------------------------\n");
     printf("|4| Dar de alta un libro");
     printf("\n--------------------------\n");
-    printf("|5| Volver al menu de usuario");
+    printf("|5| Dar de baja un comentario");
+    printf("\n--------------------------\n");
+    printf("|6| Dar de alta un comentario");
+    printf("\n--------------------------\n");
+    printf("|7| Volver al menu de usuario");
     printf("\n--------------------------\n");
     printf("\n>");
     fflush(stdin);
     scanf("%i", &valor);
 
-    if(esValidoValor(valor,5) == 0)
+    if(esValidoValor(valor,7) == 0)
     {
         printf("\nPor favor introduzca un valor valido!\n");
         system("pause");
-        menuAltaYBaja(listaUsuarios,idUsuarioActual,listaLibro,idLibroActual);
+        menuAltaYBaja(arbolUsuarios,idUsuarioActual,ldl,idLibroActual);
     }
     switch(valor)
     {
     case 1:
-        listaUsuarios = darDeBajaUsuario(listaUsuarios,idUsuarioActual);
+        arbolUsuarios = darDeBajaUsuario(arbolUsuarios,idUsuarioActual);
         break;
 
     case 2:
-        listaUsuarios = darDeAltaUsuario(listaUsuarios,idUsuarioActual);
+        arbolUsuarios = darDeAltaUsuario(arbolUsuarios,idUsuarioActual);
         break;
     case 3:
-        listaLibro = darDeBajaLibro(listaLibro,idLibroActual);
+        ldl = darDeBajaLibro(ldl,idLibroActual);
         break;
     case 4:
-        listaLibro = darDeAltaLibro(listaLibro,idLibroActual);
+        ldl = darDeAltaLibro(ldl,idLibroActual);
         break;
     case 5:
+        system("cls");
+        printf("Id del libro al que desea borrar un comentario (-1 para volver atras!)");
+        printf("\n>");
+        fflush(stdin);
+        scanf("%i", &idBuscar);
+        if(idBuscar == -1 && idBuscar < idLibroActual)
+        {
+            printf("\nId Invalido!\n");
+            system("pause");
+            menuAltaYBaja(arbolUsuarios,idUsuarioActual,ldl,idLibroActual);
+        }
+        nodoLibro * libro = buscarIdLibro(ldl,idBuscar);
+        libro->coment = darDeBajaComentario(libro->coment);
+        break;
+    case 6:
+        system("cls");
+        printf("Id del libro al que desea restaurar un comentario (-1 para volver atras!)");
+        printf("\n>");
+        fflush(stdin);
+        scanf("%i", &idBuscar);
+        if(idBuscar == -1 && idBuscar < idLibroActual)
+        {
+            printf("\nId Invalido!\n");
+            system("pause");
+            menuAltaYBaja(arbolUsuarios,idUsuarioActual,ldl,idLibroActual);
+        }
+        nodoLibro * libroABuscar = buscarIdLibro(ldl,idBuscar);
+        libroABuscar->coment = darDeAltaComentario(libroABuscar->coment);
+        break;
+    case 7:
         return 0;
         break;
     }
 }
 ///PASAJE ENTRE LISTAS Y ARCHIVOS
-nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario)
+stLibro refactorizacionLibro(stRegistro reg)
+{
+    stLibro aux;
+
+    strcpy(aux.autor, reg.autor);
+    strcpy(aux.categoria, reg.categoria);
+    strcpy(aux.editorial, reg.editorial);
+    strcpy(aux.titulo, reg.titulo);
+    aux.eliminado = reg.eliminado;
+    aux.idLibro = reg.idLibro;
+    aux.valoracion = reg.valoracion;
+    return aux;
+}
+
+stComentario refactorizacionComentario(stRegistro reg)
+{
+    stComentario aux;
+
+    strcpy(aux.descripcion, reg.descripcion);
+    strcpy(aux.fechaComentario, reg.fechaComentario);
+    strcpy(aux.tituloComentario, reg.tituloComentario);
+    aux.idComentario = reg.idComentario;
+    aux.puntaje = reg.puntaje;
+    aux.idUsuario = reg.idUsuario;
+    aux.eliminado = reg.eliminado;
+
+    return aux;
+}
+void guardarCambiosEnArchivo(nodoLibro *ldl) {
+    FILE *archivo = fopen("libros.dat", "wb");
+    if (archivo == NULL) {
+        printf("No se pudo abrir el archivo para guardar los cambios.\n");
+        return;
+    }
+    nodoLibro *currentLibro = ldl;
+
+    while (currentLibro != NULL) {
+        ///stRegistro para guardar la información del libro y sus comentarios
+        stRegistro registro;
+
+        /// Guardar la información del libro
+        strcpy(registro.titulo, currentLibro->libro.titulo);
+        strcpy(registro.editorial, currentLibro->libro.editorial);
+        strcpy(registro.autor, currentLibro->libro.autor);
+        strcpy(registro.categoria, currentLibro->libro.categoria);
+        registro.valoracion = currentLibro->libro.valoracion;
+        registro.idLibro = currentLibro->libro.idLibro;
+        registro.eliminado = currentLibro->libro.eliminado;
+        registro.idComentario = 0;  // Inicializamos idComentario en 0, se actualizará en el siguiente paso
+
+        /// Inicializar los campos de comentarios como nulos
+        registro.idUsuario = 0;
+        registro.tituloComentario[0] = '\0';
+        registro.descripcion[0] = '\0';
+        registro.puntaje = 0;
+        registro.fechaComentario[0] = '\0';
+
+        // Guardar el libro en el archivo
+        fwrite(&registro, sizeof(stRegistro), 1, archivo);
+
+        // Recorrer los comentarios asociados al libro
+        nodoComentario *currentComentario = currentLibro->coment;
+        while (currentComentario != NULL) {
+            // Actualizamos el idComentario y otros detalles
+            registro.idComentario = currentComentario->coment.idComentario;
+            registro.idUsuario = currentComentario->coment.idUsuario;
+            strcpy(registro.tituloComentario, currentComentario->coment.tituloComentario);
+            strcpy(registro.descripcion, currentComentario->coment.descripcion);
+            registro.puntaje = currentComentario->coment.puntaje;
+            strcpy(registro.fechaComentario, currentComentario->coment.fechaComentario);
+            registro.eliminado = currentComentario->coment.eliminado;
+
+            // Guardar el comentario en el archivo
+            fwrite(&registro, sizeof(stRegistro), 1, archivo);
+
+            // Mover al siguiente comentario
+            currentComentario = currentComentario->sig;
+        }
+
+        // Mover al siguiente libro
+        currentLibro = currentLibro->sig;
+    }
+
+    fclose(archivo);
+}
+
+/*stRegistro refactorizacionRegistro(nodoLibro * ldl)
+{
+    stRegistro aux;
+
+    strcpy(aux.autor, ldl->libro.autor);
+    strcpy(aux.categoria, ldl->libro.categoria);
+    strcpy(aux.editorial, ldl->libro.editorial);
+    strcpy(aux.titulo, ldl->libro.titulo);
+    aux.valoracion = ldl->libro.valoracion;
+
+    strcpy(aux.descripcion, ldl->coment->coment.descripcion);
+    strcpy(aux.fechaComentario, ldl->coment->coment.fechaComentario);
+    strcpy(aux.tituloComentario, ldl->coment->coment.tituloComentario);
+    aux.eliminado = ldl->coment->coment.eliminado;
+    aux.idLibro = ldl->coment->coment.idLibro;
+    aux.idComentario = ldl->coment->coment.idComentario;
+    aux.puntaje = ldl->coment->coment.puntaje;
+    aux.idUsuario = ldl->coment->coment.idUsuario;
+
+    return aux;
+}*/
+nodoUsuario *archivoToArbolUsuarios(char nombre[], nodoUsuario *arbolUsuarios)
+{
+    FILE *f = fopen(nombre, "rb");
+    stUsuario aux;
+
+    if (f)
+    {
+        while (fread(&aux, sizeof(stUsuario), 1, f) > 0)
+        {
+            arbolUsuarios = InsertarNodoArbol(arbolUsuarios, aux); // Insertamos en el árbol
+        }
+        fclose(f);
+    }
+    else
+    {
+        printf("Error al abrir el archivo.\n");
+    }
+
+    return arbolUsuarios;
+}
+
+nodoLibro *  archivoToLDL(char nombreArchivo[], nodoLibro * ldl)
+{
+    FILE * archi = fopen(nombreArchivo, "rb");
+    stRegistro aux;
+
+    if(archi)
+    {
+        while(fread(&aux, sizeof(stRegistro),1,archi)>0)
+        {
+            stLibro libro = refactorizacionLibro(aux);
+            stComentario comentario = refactorizacionComentario(aux);
+            ldl = alta(ldl,libro,comentario);
+        }
+
+        fclose(archi);
+    }
+    return ldl;
+}
+/*void LdlToArchivo(char nombreArchivo[], nodoLibro * ldl)
+{
+    FILE *archi = fopen(nombreArchivo, "wb");
+    stRegistro aux;
+
+    if(archi)
+    {
+        while(fwrite(&aux, sizeof(stRegistro),1,archi)>0)
+        {
+            aux = refactorizacionRegistro(aux);
+
+
+        }
+    }
+}*/
+
+/*nodoUsuario * archivoToListaUsuario(char nombre[], nodoUsuario * listaUsuario)
 {
     FILE * f = fopen(nombre, "rb");
     stUsuario aux;
@@ -360,8 +634,32 @@ nodoLibro * archivoToListaLibro(char nombre[], nodoLibro * listaLibro)
     }
     fclose(fl);
     return listaLibro;
+}*/
+
+void arbolToArchivoUsuarios(char nombre[], nodoUsuario *arbolUsuarios)
+{
+    FILE *f = fopen(nombre, "wb");
+    if (f)
+    {
+        guardarEnArchivo(arbolUsuarios, f); // Función recursiva para recorrer y guardar
+        fclose(f);
+    }
+    else
+    {
+        printf("Error al abrir el archivo.\n");
+    }
 }
-void listaToArchivoUsuarios(char nombre[], nodoUsuario * listaUsuario)  /// no se si funciona
+void guardarEnArchivo(nodoUsuario *arbol, FILE *f)
+{
+    if (arbol)
+    {
+        fwrite(&arbol->usuario, sizeof(stUsuario), 1, f); // Escribimos el usuario actual
+        guardarEnArchivo(arbol->izq, f);
+        guardarEnArchivo(arbol->der, f);
+    }
+}
+
+/*void listaToArchivoUsuarios(char nombre[], nodoUsuario * listaUsuario)
 {
     FILE * f = fopen(nombre, "wb");
     nodoUsuario * seg = listaUsuario;
@@ -374,7 +672,7 @@ void listaToArchivoUsuarios(char nombre[], nodoUsuario * listaUsuario)  /// no s
     }
     fclose(f);
 }
-void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro)  /// no se si funciona
+void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro)
 {
     FILE * f = fopen(nombre, "wb");
     nodoLibro * seg = listaLibro;
@@ -387,7 +685,7 @@ void listaToArchivoLibros(char nombre[], nodoLibro * listaLibro)  /// no se si f
     }
     fclose(f);
 }
-
+*/
 ///VERIFICACIONES MODULARIZADAS
 int esValidoValor(int valor, int maximo)
 {
@@ -432,13 +730,28 @@ int verificacionAtras(char *atras)
     }
     return 0;
 }
-int compararCadenasIgnorandoMayusculas(const char *str1, const char *str2) {
-    while (*str1 && *str2) {
-        if (tolower(*str1) != tolower(*str2)) {
+int compararCadenasIgnorandoMayusculas(const char *str1, const char *str2)
+{
+    while (*str1 && *str2)
+    {
+        if (tolower(*str1) != tolower(*str2))
+        {
             return 0; // No son iguales
         }
         str1++;
         str2++;
     }
     return *str1 == *str2; // Verifica si ambas cadenas terminan
+}
+
+nodoLibro * alta(nodoLibro * ldl, stLibro libro, stComentario comentario)
+{
+    nodoLibro * libroABuscar = buscarIdLibro(ldl, libro.idLibro);
+    if(!libroABuscar)
+    {
+        libroABuscar = crearNodoLibro(libro);
+        ldl = agregarAlFinalLibro(ldl,libroABuscar);
+    }
+    libroABuscar->coment = agregarAlFinalComentario(libroABuscar->coment, crearNodoComentario(comentario));
+    return ldl;
 }

@@ -9,9 +9,20 @@
 
 typedef struct{
     stUsuario usuario;
-    struct nodoUsuario* sig;
+    struct nodoUsuario* izq;
+    struct nodoUsuario* der;
 } nodoUsuario;
 
+nodoUsuario * inicLista();
+nodoUsuario * buscarMailUsuario(nodoUsuario* arbol, char * mail);
+nodoUsuario * CrearNodoArbol(stUsuario usuario);
+nodoUsuario * InsertarNodoArbol(nodoUsuario *arbol, stUsuario usuario);
+nodoUsuario * buscarPorID(nodoUsuario *arbol, int id);
+void mostrarArbolInOrder(nodoUsuario *arbol);
+nodoUsuario* darDeBajaUsuario(nodoUsuario *arbol, int idUsuarioActual);
+nodoUsuario * darDeAltaUsuario(nodoUsuario *arbol, int idUsuarioActual);
+nodoUsuario * buscarUltimoUsuario(nodoUsuario* arbol);
+/*
 nodoUsuario * inicLista();
 nodoUsuario * buscarMailUsuario(nodoUsuario* listaUsuarios, char * mail); /// deberia retornar NULL si no se encuentra el mail
 nodoUsuario * crearNodoUsuario(stUsuario usuario);
@@ -21,5 +32,7 @@ void muestraNodoUsuario(nodoUsuario * nodo);
 void muestraListaUsuario(nodoUsuario * listaUsuario);
 nodoUsuario* buscarIdUsuario(nodoUsuario* listaUsuarios, int idBorrar); ///retorno NULL si no se encuentra el usuario
 void muestraListaUsuarioBaja(nodoUsuario * listaUsuario);
+*/
+
 
 #endif // NODOUSUARIO_H_INCLUDED

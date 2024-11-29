@@ -6,6 +6,7 @@ nodoLibro * crearNodoLibro(stLibro libro)
     nodoLibro * nuevo = (nodoLibro * )malloc(sizeof(nodoLibro));
     nuevo->libro = libro;
     nuevo->sig = NULL;
+    nuevo->coment = NULL;
     return nuevo;
 }
 nodoLibro * agregarAlFinalLibro(nodoLibro * listaLibro, nodoLibro * nuevo)
@@ -33,9 +34,13 @@ nodoLibro* buscarUltimoLibro(nodoLibro* listaLibro)
     return seg;
 }
 
-void muestraNodoLibro(nodoLibro * nodo)
+void muestraNodoLibro(stLibro libro)
 {
-    muestraLibro(nodo->libro);
+        printf("(Id:%d)", libro.idLibro);
+        printf(" %s ", libro.titulo);
+        printf("de %s", libro.autor);
+        printf("| %s ", libro.categoria);
+        printf("| %f |\n\n", libro.valoracion);
 }
 
 void muestraListaLibro(nodoLibro * listaLibro)
@@ -44,7 +49,7 @@ void muestraListaLibro(nodoLibro * listaLibro)
     {
         if(listaLibro->libro.eliminado == 0)
         {
-            muestraNodoLibro(listaLibro);
+            muestraNodoLibro(listaLibro->libro);
         }
         listaLibro = listaLibro->sig;
     }
@@ -56,7 +61,7 @@ void muestraListaLibroBaja(nodoLibro * listaLibro)
     {
         if(listaLibro->libro.eliminado == -1)
         {
-            muestraNodoLibro(listaLibro);
+            muestraNodoLibro(listaLibro->libro);
         }
         listaLibro = listaLibro->sig;
     }
@@ -79,17 +84,17 @@ void muestraUnLibroPorId(nodoLibro * listaLibro, int id)
     }
     if(flag == 1 )
     {
-        muestraNodoLibro(seg);
+        muestraNodoLibro(seg->libro);
     }
 }
 
-nodoLibro * buscarIdLibro(nodoLibro * listaLibro, int idBorrar)
+nodoLibro * buscarIdLibro(nodoLibro * listaLibro, int idBuscar)
 {
     nodoLibro * seg = listaLibro;
     int flag = 0;
     while(seg != NULL && flag == 0)
     {
-        if(seg->libro.idLibro == idBorrar)
+        if(seg->libro.idLibro == idBuscar)
         {
             flag = 1;
         }
@@ -124,7 +129,7 @@ void muestraLibroPorAutor(nodoLibro * listaLibro)
     {
         if(compararCadenasIgnorandoMayusculas(aux, seg->libro.autor) == 1)
         {
-             muestraNodoLibro(seg);
+            muestraNodoLibro(seg->libro);
             flag = 1;
         }
         seg = seg->sig;
@@ -152,7 +157,7 @@ void muestraLibroPorCategoria(nodoLibro * listaLibro)
     {
         if(compararCadenasIgnorandoMayusculas(aux, seg->libro.categoria) == 1)
         {
-            muestraNodoLibro(seg);
+            muestraNodoLibro(seg->libro);
             flag = 1;
         }
         seg = seg->sig;
@@ -226,7 +231,7 @@ nodoLibro * darDeAltaLibro(nodoLibro * listaLibro,int idLibroActual)
     return listaLibro;
 }
 
-nodoLibro * buscarPorTitulo(nodoLibro * listaLibro, char titulo)
+/*nodoLibro * buscarPorTitulo(nodoLibro * listaLibro, char titulo[])
 {
     nodoLibro * seg = listaLibro;
     int flag = 0;
@@ -249,7 +254,7 @@ nodoLibro * buscarPorTitulo(nodoLibro * listaLibro, char titulo)
     {
         return NULL;
     }
-}
+}*/
 
 
 
